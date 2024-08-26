@@ -59,7 +59,7 @@ const SignIn = () => {
           <p>약관내용</p>
         </div>
       )}
-
+      {/* 내용 추가해야됨 */}
       <form onSubmit={handleSignUp}>
         <input
           type="email"

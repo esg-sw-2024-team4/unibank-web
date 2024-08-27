@@ -1,0 +1,41 @@
+.subject-container {
+  margin-top: 140px;
+  width: 70vw;
+}
+
+.community-container {
+  display: flex;
+  background-color: rgb(234, 206, 206);
+  height: 300px;
+  border-radius: 30px;
+  padding: 15px;
+}
+
+.community-section,
+.problem-bank-section {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.divider {
+  width: 0.5px;
+  background-color: #000;
+  margin: 0 20px;
+}
+
+.arrow-link {
+  text-decoration: none;
+  font-size: 24px;
+  color: #000;
+}
+
+.section-link:hover {
+  color: #007bff;
+}
+
+.arrow {
+  margin-left: 10px;
+  font-size: 24px;
+}

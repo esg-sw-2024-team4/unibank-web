@@ -3,6 +3,7 @@ import Header from "./pages/Header";
 import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
+import Subject from "./pages/Subject";
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,15 @@ const App: React.FC = () => {
             <>
               <Header />
               <Home />
+            </>
+          }
+        />
+        <Route
+          path="/subject"
+          element={
+            <>
+              <Header />
+              <Subject />
             </>
           }
         />

@@ -12,7 +12,7 @@ const Header: React.FC = () => {
           <Link to="/login" className="login-link">
             로그인
           </Link>
-          <span className="divider">/</span>
+          <span> / </span>
           <Link to="/signup" className="signup-link">
             회원가입
           </Link>

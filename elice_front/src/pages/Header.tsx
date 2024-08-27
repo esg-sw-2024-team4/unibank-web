@@ -1,7 +1,7 @@
-import "../cssfolder/Headcss.css";
-
+import "../cssfolder/Header.css";
 import { Link } from "react-router-dom";
-const Header = () => {
+
+const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="contents">

@@ -1,6 +1,6 @@
 import "../cssfolder/Home.css";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <div className="home-container">
       <p className="p">메인페이지</p>

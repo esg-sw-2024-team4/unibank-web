@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import LogIn from "./components/LogIn";
-import SignIn from "./components/SignIn";
-import Home from "./components/Home";
+import Header from "./pages/Header";
+import LogIn from "./pages/LogIn";
+import SignIn from "./pages/SignIn";
+import Home from "./pages/Home";
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Router>
       <Routes>

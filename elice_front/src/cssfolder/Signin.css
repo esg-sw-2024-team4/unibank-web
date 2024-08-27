@@ -87,3 +87,43 @@
   width: 30%;
   margin-bottom: 30px;
 }
+.email-verification-container {
+  display: flex;
+  width: 50%;
+  margin-bottom: 15px;
+  gap: 10px; /* 입력칸과 버튼 사이의 간격 */
+}
+
+.email-verification-container input {
+  width: 80%;
+  height: 70%;
+}
+.email-verification-container button {
+  width: 20%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+.email-check-container {
+  display: flex;
+  justify-items: left;
+  /* align-items: left; */
+  width: 40%;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+.email-check-container input {
+  width: 50%;
+  height: 70%;
+}
+.email-check-container button {
+  width: 30%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}

@@ -1,5 +1,5 @@
-import "../cssfolder/Header.css";
-import { Link } from "react-router-dom";
+import '../cssfolder/Header.css';
+import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   return (

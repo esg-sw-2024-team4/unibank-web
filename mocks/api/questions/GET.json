@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "total": 2
+  },
+  "data": [
+    {
+      "id": 1,
+      "subject_id": 1,
+      "author_id": 1,
+      "question_text": "What is 2+2?",
+      "question_type": "multiple_choice",
+      "image_url": "http://example.com/image1.png",
+      "source": "Basic Arithmetic Textbook"
+    },
+    {
+      "id": 2,
+      "subject_id": 2,
+      "author_id": 2,
+      "question_text": "Explain the theory of relativity.",
+      "question_type": "short_answer",
+      "image_url": null,
+      "source": "Advanced Physics Lecture Notes"
+    }
+  ]
+}

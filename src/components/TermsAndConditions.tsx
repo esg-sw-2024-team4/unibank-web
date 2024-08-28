@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface TermsAndConditionsProps {
   allAgree: boolean;
@@ -19,12 +19,12 @@ const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
         <div>
           <label className="terms-label">
             <input
-              style={{ margin: "1px" }}
+              style={{ margin: '1px' }}
               type="checkbox"
               checked={allAgree}
               onChange={(e) => setAllAgree(e.target.checked)}
             />
-            <p style={{ fontSize: "10px" }}>아래 약관에 모두 동의합니다.</p>
+            <p style={{ fontSize: '10px' }}>아래 약관에 모두 동의합니다.</p>
           </label>
         </div>
         <div className="terms-right">

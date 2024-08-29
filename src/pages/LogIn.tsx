@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import "../cssfolder/Login.css";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react';
+import '../cssfolder/Login.css';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/login", { email, password });
+      const response = await axios.post('/login', { email, password });
       if (response.status === 200) {
-        alert("로그인 성공");
-        navigate("/");
+        alert('로그인 성공');
+        navigate('/');
       }
     } catch (error) {
-      console.log("로그인 오류:", error);
-      alert("로그인 실패");
+      console.log('로그인 오류:', error);
+      alert('로그인 실패');
     }
   };
 
   const navigateToSignUp = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
 
   return (

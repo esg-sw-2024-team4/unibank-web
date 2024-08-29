@@ -1,16 +1,16 @@
-import "../cssfolder/Home.css";
-import React, { useState } from "react";
+import '../cssfolder/Home.css';
+import React, { useState } from 'react';
 
 const Home: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
-    console.log("검색");
+    console.log('검색');
     // 검색 로직 추가해야됨
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       handleSearch();
     }
   };

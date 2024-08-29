@@ -1,5 +1,5 @@
-import "../cssfolder/Subject.css";
-import { Link } from "react-router-dom";
+import '../cssfolder/Subject.css';
+import { Link } from 'react-router-dom';
 
 const Subject = () => {
   return (

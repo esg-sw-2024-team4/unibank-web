@@ -15,7 +15,8 @@
 .problem-bank-section {
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  /* justify-content: space-between; */
   align-items: baseline;
 }
 
@@ -38,4 +39,9 @@
 .arrow {
   margin-left: 10px;
   font-size: 24px;
+}
+
+.problem-list {
+  margin-top: 10px; /* 문제 리스트를 문제은행 글씨 아래에 배치 */
+  font-size: 16px; /* 문제 텍스트 크기 조정 */
 }

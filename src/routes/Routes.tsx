@@ -19,7 +19,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/subject"
+          path="/subjects/:id"
           element={
             <>
               <Header />

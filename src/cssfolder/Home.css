@@ -42,3 +42,23 @@
   text-align: center;
   font-size: 18px;
 }
+
+.subject-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  /* width: 80%; */
+}
+
+.subject-item {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}

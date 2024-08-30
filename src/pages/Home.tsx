@@ -1,8 +1,53 @@
 import '../cssfolder/Home.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+interface Subject {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface Problem {
+  id: number;
+  subject_id: number;
+  author_id: number;
+  question_text: string;
+  question_type: string;
+  image_url: string;
+  source: string;
+}
 
 const Home: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [subjectList, setSubjectList] = useState<Subject[]>([]);
+  const [problemList, setProblemList] = useState<Problem[]>([]);
+
+  useEffect(() => {
+    getSubjectData();
+    getProblemData();
+  }, []);
+
+  const getSubjectData = async () => {
+    try {
+      const response = await axios.get('../../mocks/api/subjects/GET.json');
+      setSubjectList(response.data.data);
+      console.log(subjectList);
+    } catch (error) {
+      console.error('Failed to fetch subject data:', error);
+    }
+  };
+
+  const getProblemData = async () => {
+    try {
+      const response = await axios.get('../../mocks/api/questions/GET.json');
+      setProblemList(response.data.data);
+    } catch (error) {
+      console.error('문제 리스트 받기 실패', error);
+    }
+  };
 
   const handleSearch = () => {
     console.log('검색');
@@ -13,6 +58,15 @@ const Home: React.FC = () => {
     if (event.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const filteringAndNavigate = (subject: Subject) => {
+    const filteredProblems = problemList.filter(
+      (problem) => problem.subject_id === subject.id
+    );
+    navigate(`/subjects/${subject.id}`, {
+      state: { problems: filteredProblems, subjectName: subject.name },
+    });
   };
 
   return (
@@ -31,7 +85,16 @@ const Home: React.FC = () => {
         </button>
       </div>
 
-      {/* 여기에 과목들을 추가해야됨 */}
+      <div className="subject-list">
+        {subjectList.map((subject) => (
+          <div key={subject.id} className="subject-item">
+            <h3 onClick={() => filteringAndNavigate(subject)}>
+              {subject.name}
+            </h3>
+            <p>{subject.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import '../cssfolder/Subject.css';
+import * as S from './Subject.styles';
+
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
@@ -32,31 +33,31 @@ const Subject: FC = () => {
     })();
   }, [id]);
   return (
-    <div className="subject-container">
-      <div className="center-container">
+    <S.SubjectContainer>
+      <div>
         <h1>{subject?.name}</h1>
         <p>총 {problems.length}문제중 0문제 풀이</p>
       </div>
-      <div className="community-container">
-        <div className="community-section">
+      <S.CommunityContainer>
+        <S.CommunitySection>
           <h2>커뮤니티</h2>
-        </div>
-        <div className="divider"></div>
-        <div className="problem-bank-section">
+        </S.CommunitySection>
+        <S.DivDivider></S.DivDivider>
+        <S.ProblemBankSection>
           <h2>문제은행</h2>
           {/* 문제 리스트를 여기에 추가 */}
-          <div className="problem-list">
+          <S.DivProblemList>
             {problems.map((problem) => (
-              <p key={problem.id} className="problem-item">
+              <S.ParagraphProblemItem key={problem.id}>
                 {problem.question_text}
-              </p>
+              </S.ParagraphProblemItem>
             ))}
-          </div>
-        </div>
-      </div>
+          </S.DivProblemList>
+        </S.ProblemBankSection>
+      </S.CommunityContainer>
       <br />
-      <button>문제등록</button>
-    </div>
+      <button type="button">문제등록</button>
+    </S.SubjectContainer>
   );
 };
 

@@ -1,11 +1,14 @@
-import '../../cssfolder/Header.css';
+import { FC } from 'react';
+
+import * as S from './Header.styles';
+
 import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
 import { Link } from 'react-router-dom';
 import { authenticate, clearCredentials } from '../../services/api';
 import logo from '../../assets/UniBank.svg';
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const handleSignIn = () => {
     setAuth({
@@ -30,45 +33,43 @@ const Header: React.FC = () => {
     });
   };
   return (
-    <header className="header">
-      <div className="contents">
-        <div className="logoZone">
-          <Link to="/" className="logo-link">
-            <img src={logo} alt="로고" className="logo" />
+    <S.Header>
+      <S.DivContents>
+        <S.DivLogoZone>
+          <Link to="/">
+            <S.ImgLogo src={logo} alt="로고" />
           </Link>
-          <div className="detail">
+          <div>
             <p>대학생을 위한 문제 은행</p>
           </div>
-        </div>
-        <div className="auth-links">
+        </S.DivLogoZone>
+        <div>
           {!auth.isAuthenticated ? (
-            <button
+            <S.LoginButton
               type="button"
-              className="login-link"
               onClick={() => {
                 handleSignIn();
               }}
             >
               Google 소셜 로그인
-            </button>
+            </S.LoginButton>
           ) : (
-            <button
+            <S.LogoutButton
               type="button"
-              className="login-link"
               onClick={() => {
                 handleSignOut();
               }}
             >
               로그아웃
-            </button>
+            </S.LogoutButton>
           )}
           {/* <span> / </span>
           <Link to="/signup" className="signup-link">
             회원가입
           </Link> */}
         </div>
-      </div>
-    </header>
+      </S.DivContents>
+    </S.Header>
   );
 };
 

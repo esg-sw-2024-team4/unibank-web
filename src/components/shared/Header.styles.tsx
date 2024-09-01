@@ -1,4 +1,6 @@
-.header {
+import styled from 'styled-components';
+
+export const Header = styled.header`
   position: fixed;
   left: 0;
   top: 0;
@@ -7,9 +9,9 @@
   background-color: #ffffff;
   box-shadow: 0 4px 4px -2px rgba(32, 44, 153, 0.2);
   z-index: 10;
-}
+`;
 
-.contents {
+export const DivContents = styled.div`
   display: flex;
   width: 90%;
   max-width: 1100px;
@@ -17,42 +19,48 @@
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
-}
+`;
 
-.logoZone {
+export const DivLogoZone = styled.div`
   display: flex;
   align-items: center;
   font-size: 13px;
   color: gray;
-}
+`;
 
-.logoZone img {
+export const ImgLogo = styled.img`
   margin-right: 12px;
-}
+`;
 
-button {
+const Button = styled.button`
   padding: 10px 15px;
   border: none;
   border-radius: 12px;
   font-weight: bold;
-}
+`;
 
-.auth-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.login-button,
-.signup-button {
+export const LoginButton = styled(Button)`
   padding: 12px 16px;
   font-size: 16px;
   border: 1px solid #ccc;
   background-color: white;
   cursor: pointer;
   border-radius: 4px;
-}
 
-.login-button:hover,
-.signup-button:hover {
-  background-color: #f0f0f0;
-}
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const LogoutButton = styled(Button)`
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;

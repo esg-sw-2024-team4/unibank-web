@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
 import { Link } from 'react-router-dom';
 import { authenticate, clearCredentials } from '../../services/api';
-import logo from '../../assets/UniBankLogo.svg';
+import logo from '../../assets/UniBank.svg';
 
 const Header: React.FC = () => {
   const [auth, setAuth] = useRecoilState(authState);

@@ -1,6 +1,7 @@
 import '../cssfolder/Home.css';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import bigLogo from '../assets/UniBankBigLogo.svg';
 import { getProblemsAll, getSubjectsAll } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 
@@ -42,6 +43,9 @@ const Home: FC = () => {
   };
   return (
     <div className="home-container">
+      <div className="bggra"></div>
+      <img src={bigLogo} alt="로고" className="bigLogo" />
+      <h4>수강하는 과목을 검색하여 공부해 보세요!</h4>
       <div className="search-bar">
         <input
           type="text"

@@ -1,67 +1,39 @@
 import '../cssfolder/Home.css';
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import bigLogo from '../assets/UniBankBigLogo.svg';
+import { getProblemsAll, getSubjectsAll } from '../services/api';
+import { IProblem, ISubject } from '../interfaces';
 
-interface Subject {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface Problem {
-  id: number;
-  subject_id: number;
-  author_id: number;
-  question_text: string;
-  question_type: string;
-  image_url: string;
-  source: string;
-}
-
-const Home: React.FC = () => {
+const Home: FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [subjectList, setSubjectList] = useState<Subject[]>([]);
-  const [problemList, setProblemList] = useState<Problem[]>([]);
-
+  const [subjectList, setSubjectList] = useState<ISubject[]>([]);
+  const [problemList, setProblemList] = useState<IProblem[]>([]);
   useEffect(() => {
-    getSubjectData();
-    getProblemData();
+    getSubjectsAll().then((data) => {
+      if (data) {
+        const { data: fetchedSubjectsAll } = data;
+        setSubjectList(fetchedSubjectsAll);
+      }
+    });
+    getProblemsAll().then((data) => {
+      if (data) {
+        const { data: fetchedProblemsAll } = data;
+        setProblemList(fetchedProblemsAll);
+      }
+    });
   }, []);
-
-  const getSubjectData = async () => {
-    try {
-      const response = await axios.get('../../mocks/api/subjects/GET.json');
-      setSubjectList(response.data.data);
-      console.log(subjectList);
-    } catch (error) {
-      console.error('Failed to fetch subject data:', error);
-    }
-  };
-
-  const getProblemData = async () => {
-    try {
-      const response = await axios.get('../../mocks/api/questions/GET.json');
-      setProblemList(response.data.data);
-    } catch (error) {
-      console.error('문제 리스트 받기 실패', error);
-    }
-  };
-
   const handleSearch = () => {
     console.log('검색');
     // TO DO: 검색 로직 추가
   };
-
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
   };
-
-  const filteringAndNavigate = (subject: Subject) => {
+  const filteringAndNavigate = (subject: ISubject) => {
     const filteredProblems = problemList.filter(
       (problem) => problem.subject_id === subject.id
     );
@@ -69,7 +41,6 @@ const Home: React.FC = () => {
       state: { problems: filteredProblems, subjectName: subject.name },
     });
   };
-
   return (
     <div className="home-container">
       <div className="bggra"></div>

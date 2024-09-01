@@ -2,6 +2,7 @@ import '../cssfolder/Home.css';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import bigLogo from '../assets/UniBankBigLogo.svg';
 
 interface Subject {
   id: number;
@@ -71,6 +72,9 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-container">
+      <div className="bggra"></div>
+      <img src={bigLogo} alt="로고" className="bigLogo" />
+      <h4>수강하는 과목을 검색하여 공부해 보세요!</h4>
       <div className="search-bar">
         <input
           type="text"
@@ -84,7 +88,6 @@ const Home: React.FC = () => {
           🔍
         </button>
       </div>
-
       <div className="subject-list">
         {subjectList.map((subject) => (
           <div key={subject.id} className="subject-item">

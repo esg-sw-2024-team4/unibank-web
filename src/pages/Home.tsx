@@ -51,7 +51,7 @@ const Home: React.FC = () => {
 
   const handleSearch = () => {
     console.log('검색');
-    // 검색 로직 추가해야됨
+    // TO DO: 검색 로직 추가
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

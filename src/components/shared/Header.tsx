@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
 import { Link } from 'react-router-dom';
 import { authenticate, clearCredentials } from '../../services/api';
+import logo from '../../assets/UniBankLogo.svg';
 
 const Header: React.FC = () => {
   const [auth, setAuth] = useRecoilState(authState);
@@ -31,9 +32,14 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="contents">
-        <Link to="/" className="logo-link">
-          <img src="/path/to/your/logo.png" alt="로고" className="logo" />
-        </Link>
+        <div className="logoZone">
+          <Link to="/" className="logo-link">
+            <img src={logo} alt="로고" className="logo" />
+          </Link>
+          <div className="detail">
+            <p>대학생을 위한 문제 은행</p>
+          </div>
+        </div>
         <div className="auth-links">
           {!auth.isAuthenticated ? (
             <button

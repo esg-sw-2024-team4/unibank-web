@@ -1,33 +1,40 @@
 import '../cssfolder/Subject.css';
-import { useParams, useLocation } from 'react-router-dom';
-import React from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PATHS } from '../routes/Routes';
+import { getProblemsBySubjectId, getSubjectById } from '../services/api';
+import { IProblem, ISubject } from '../interfaces';
 
-interface Problem {
-  id: number;
-  subject_id: number;
-  author_id: number;
-  question_text: string;
-  question_type: string;
-  image_url: string;
-  source: string;
-}
-
-interface LocationState {
-  problems: Problem[];
-  subjectName: string;
-}
-
-const Subject: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const location = useLocation();
-  const { problems, subjectName } = location.state as LocationState;
-
-  console.log(id);
-
+const Subject: FC = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [subject, setSubject] = useState<ISubject | null>(null);
+  const [problems, setProblems] = useState<IProblem[]>([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!id || isNaN(+id)) {
+          throw new Error('Invalid request...');
+        }
+        const data = await getSubjectById(+id);
+        if (data) {
+          setSubject(data);
+          getProblemsBySubjectId(+id).then((data) => {
+            if (data) {
+              setProblems(data);
+            }
+          });
+        }
+      } catch (err) {
+        navigate(PATHS.notFound);
+        console.error(err);
+      }
+    })();
+  }, [id]);
   return (
     <div className="subject-container">
       <div className="center-container">
-        <h1>{subjectName}</h1>
+        <h1>{subject?.name}</h1>
         <p>총 {problems.length}문제중 0문제 풀이</p>
       </div>
       <div className="community-container">

@@ -50,6 +50,17 @@ export const getSubjectsAll = async () => {
   }
 };
 
+export const getSubjectsByKeyword = async (keyword: string) => {
+  if (!keyword) {
+    throw new Error('Invalid keyword...');
+  }
+  const res = await getSubjectsAll();
+  const allSubjects = res?.data || [];
+  return allSubjects.filter((subject) =>
+    subject.name.toLowerCase().includes(keyword.toLowerCase())
+  );
+};
+
 export const getSubjectById = async (subjectId: number) => {
   if (!subjectId) {
     throw new Error('Invalid subject id...');
@@ -80,4 +91,51 @@ export const getProblemsBySubjectId = async (subjectId: number) => {
   const res = await getProblemsAll();
   const allProblems = res?.data || [];
   return allProblems.filter((problem) => problem.subject_id === subjectId);
+};
+
+export const postProblem = async (
+  token: string,
+  problem: Omit<IProblem, 'id'>
+) => {
+  try {
+    const res = await instance.post(
+      '/api/questions',
+      problem,
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
+};
+
+export const putProblem = async (token: string, problem: IProblem) => {
+  try {
+    const { id, subject_id, question_text, image_url, source } = problem;
+    const res = await instance.put<IProblem>(
+      `/api/questions/${id}`,
+      {
+        subject_id,
+        question_text,
+        image_url,
+        source,
+      },
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
+};
+
+export const deleteProblem = async (token: string, id: number) => {
+  try {
+    const res = await instance.delete<IProblem>(
+      `/api/questions/${id}`,
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
 };

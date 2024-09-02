@@ -41,11 +41,11 @@ const Button = styled.button`
 
 export const LoginButton = styled(Button)`
   padding: 12px 16px;
-  font-size: 16px;
+  font-size: 14px;
   border: 1px solid #ccc;
   background-color: white;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 15px;
 
   &:hover {
     background-color: #f0f0f0;
@@ -54,11 +54,11 @@ export const LoginButton = styled(Button)`
 
 export const LogoutButton = styled(Button)`
   padding: 12px 16px;
-  font-size: 16px;
+  font-size: 14px;
   border: 1px solid #ccc;
   background-color: white;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 15px;
 
   &:hover {
     background-color: #f0f0f0;

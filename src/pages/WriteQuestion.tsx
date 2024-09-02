@@ -1,4 +1,4 @@
-import * as S from './Subject.styles';
+import * as S from './WriteQuestion.styles';
 
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -36,8 +36,13 @@ const Subject: FC = () => {
     <S.SubjectContainer>
       <div>
         <h1>{subject?.name}</h1>
+        <p>총 {problems.length}문제중 0문제 풀이</p>
       </div>
-      <S.ProblemContainer>
+      <S.CommunityContainer>
+        <S.CommunitySection>
+          <h2>커뮤니티</h2>
+        </S.CommunitySection>
+        <S.DivDivider></S.DivDivider>
         <S.ProblemBankSection>
           <h2>문제은행</h2>
           {/* 문제 리스트를 여기에 추가 */}
@@ -45,23 +50,14 @@ const Subject: FC = () => {
             {problems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
                 {problem.question_text}
-                console.log({problem.question_text});
               </S.ParagraphProblemItem>
             ))}
           </S.DivProblemList>
         </S.ProblemBankSection>
-      </S.ProblemContainer>
+      </S.CommunityContainer>
       <br />
-      <S.WriteQuestionBtn
-        type="button"
-        onClick={() => {
-          navigate(`/writequestion/${id}`, {
-            state: { subject_id: id },
-          });
-        }}
-      >
-        문제 등록
-      </S.WriteQuestionBtn>
+      <button type="button">문제등록</button>
+      
     </S.SubjectContainer>
   );
 };

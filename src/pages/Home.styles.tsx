@@ -9,8 +9,8 @@ export const DivHomeContainer = styled.div`
 
 export const DivBggra = styled.div`
   /* bggra를 기준으로 이미지 위치 조정 */
-  position: relative;
-  top: 0%;
+  position: absolute;
+  top: 25%;
   width: 1280px;
   height: 218px;
   flex-shrink: 0;
@@ -21,11 +21,8 @@ export const DivBggra = styled.div`
 `;
 
 export const ImgBigLogo = styled.img`
-  /* 부모 요소(bggra)를 기준으로 절대 위치 */
-  position: absolute;
-  /* 세로 방향 중앙 */
-  top: 30%;
-  /* 가로 방향 중앙 */
+  position: relative;
+  top: 70px;
   left: 50%;
   /* 중앙 정렬 */
   transform: translate(-50%, -50%);
@@ -36,9 +33,10 @@ export const ImgBigLogo = styled.img`
 `;
 
 export const Heading4 = styled.h4`
-  position: absolute;
+  position: relative;
+  text-align: center;
   /* 세로 방향 중앙 */
-  top: 35%;
+  top: 50px;
   /* 가로 방향 중앙 */
   left: 50%;
   /* 중앙 정렬 */
@@ -51,12 +49,14 @@ export const Heading4 = styled.h4`
 export const DivSearchBar = styled.div`
   background: white;
   display: flex;
+  margin-top: 75px;
+  margin-top: 75px;
+  margin-left: auto;
+  margin-right: auto;
   align-items: center;
   border-radius: 25px;
   padding: 10px;
   /* max-width: 400px; */
-  /* 중앙 정렬 */
-  margin: 0 auto;
   width: 60%;
   box-shadow: 0px 5px 30px #e1e4ff;
 `;
@@ -80,9 +80,11 @@ export const ButtonSearch = styled.button`
   padding-right: 20px;
   color: #333;
 
-  &:hover {
-    /* 돋보기 버튼에 호버 효과 */
-    color: #000;
+ &:hover {
+    background: #f0f0f0;
+    transform: scale(1.05);
+    border-radius: 50px;
+    }
   }
 `;
 
@@ -112,11 +114,35 @@ export const DivSubjectItem = styled.div`
 `;
 
 export const DivSubjectItemTitle = styled.h3`
-  margin: 3px;
-  font-size: 1.7em;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #4c4c4c;
+  text-align: left;
+  flex-wrap: nowrap;
 `;
 
 export const DivSubjectItemDescription = styled(Paragraph)`
-  margin: 7px;
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 5px;
   margin-left: 3px;
+  text-align: left;
+  font-size: 1em;
+  color: #4c4c4c;
+  flex-wrap: nowrap;
+`;
+
+export const Div = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
+export const SpanDiv = styled.div`
+  display: inline;
+  flex-wrap: nowrap;
+`;
+
+export const NextButton = styled.img`
+  display: flex;
+  padding-left: 700px;
 `;

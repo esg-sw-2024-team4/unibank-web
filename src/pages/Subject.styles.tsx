@@ -5,20 +5,12 @@ export const SubjectContainer = styled.div`
   width: 70vw;
 `;
 
-export const CommunityContainer = styled.div`
+export const ProblemContainer = styled.div`
   display: flex;
   background-color: rgb(234, 206, 206);
   height: 300px;
   border-radius: 30px;
   padding: 15px;
-`;
-
-export const CommunitySection = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */
-  align-items: baseline;
 `;
 
 export const ProblemBankSection = styled.div`
@@ -29,12 +21,6 @@ export const ProblemBankSection = styled.div`
   align-items: baseline;
 `;
 
-export const DivDivider = styled.div`
-  width: 0.5px;
-  background-color: #000;
-  margin: 0 20px;
-`;
-
 export const DivProblemList = styled.div`
   /* 문제 리스트를 문제은행 글씨 아래에 배치 */
   margin-top: 10px;
@@ -43,6 +29,19 @@ export const DivProblemList = styled.div`
 `;
 
 export const ParagraphProblemItem = styled.p``;
+
+export const WriteQuestionBtn = styled.button`
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
 
 /*
 .arrow-link {

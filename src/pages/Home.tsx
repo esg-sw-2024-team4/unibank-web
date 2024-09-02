@@ -3,6 +3,7 @@ import * as S from './Home.styles';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bigLogo from '../assets/UniBankBigLogo.svg';
+import nextVector from '../assets/nextVector.svg';
 import { getProblemsAll, getSubjectsAll } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 
@@ -55,14 +56,22 @@ const Home: FC = () => {
       <S.DivSubjectList>
         {subjectList.map((subject) => (
           <S.DivSubjectItem key={subject.id}>
-            <S.DivSubjectItemTitle
-              onClick={() => navigate(`/subjects/${subject.id}`)}
-            >
-              {subject.name}
-            </S.DivSubjectItemTitle>
-            <S.DivSubjectItemDescription>
-              {subject.description}
-            </S.DivSubjectItemDescription>
+            <S.Div>
+              <S.SpanDiv>
+                <S.DivSubjectItemTitle
+                  onClick={() => navigate(`/subjects/${subject.id}`)}
+                >
+                  {subject.name}
+                </S.DivSubjectItemTitle>
+                <S.DivSubjectItemDescription>
+                  {subject.description}
+                </S.DivSubjectItemDescription>
+              </S.SpanDiv>
+              <S.NextButton
+                src={nextVector}
+                onClick={() => navigate(`/subjects/${subject.id}`)}
+              ></S.NextButton>
+            </S.Div>
           </S.DivSubjectItem>
         ))}
       </S.DivSubjectList>

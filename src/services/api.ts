@@ -81,3 +81,16 @@ export const getProblemsBySubjectId = async (subjectId: number) => {
   const allProblems = res?.data || [];
   return allProblems.filter((problem) => problem.subject_id === subjectId);
 };
+
+export const searchSubjects = async (searchTerm: string) => {
+  try {
+    const allSubjects = await getSubjectsAll();
+    const filteredSubjects = allSubjects?.data.filter((subject: ISubject) =>
+      subject.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    return filteredSubjects;
+  } catch (error) {
+    console.error('Failed to search subjects:', error);
+    return [];
+  }
+};

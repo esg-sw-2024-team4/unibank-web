@@ -3,19 +3,28 @@ import * as S from './Home.styles';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bigLogo from '../assets/UniBankBigLogo.svg';
-import { getProblemsAll, getSubjectsAll } from '../services/api';
+import {
+  getProblemsAll,
+  getSubjectsAll,
+  searchSubjects,
+} from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 
 const Home: FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [subjectList, setSubjectList] = useState<ISubject[]>([]);
+  // const [subjectList, setSubjectList] = useState<ISubject[]>([]);
   const [problemList, setProblemList] = useState<IProblem[]>([]);
+  const [filteredSubjectList, setFilteredSubjectList] = useState<ISubject[]>(
+    []
+  );
+
   useEffect(() => {
     getSubjectsAll().then((data) => {
       if (data) {
         const { data: fetchedSubjectsAll } = data;
-        setSubjectList(fetchedSubjectsAll);
+        // setSubjectList(fetchedSubjectsAll);
+        setFilteredSubjectList(fetchedSubjectsAll);
       }
     });
     getProblemsAll().then((data) => {
@@ -25,18 +34,23 @@ const Home: FC = () => {
       }
     });
   }, []);
+
   useEffect(() => {
     console.log(problemList);
   }, [problemList]);
-  const handleSearch = () => {
+
+  const handleSearch = async () => {
     console.log('검색');
-    // TO DO: 검색 로직 추가
+    const filtered = await searchSubjects(searchTerm);
+    setFilteredSubjectList(filtered || []); // undefined일 경우 빈 배열로 처리
   };
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
   };
+
   return (
     <S.DivHomeContainer>
       <S.DivBggra></S.DivBggra>
@@ -53,7 +67,7 @@ const Home: FC = () => {
         <S.ButtonSearch onClick={handleSearch}>🔍</S.ButtonSearch>
       </S.DivSearchBar>
       <S.DivSubjectList>
-        {subjectList.map((subject) => (
+        {filteredSubjectList.map((subject) => (
           <S.DivSubjectItem key={subject.id}>
             <S.DivSubjectItemTitle
               onClick={() => navigate(`/subjects/${subject.id}`)}

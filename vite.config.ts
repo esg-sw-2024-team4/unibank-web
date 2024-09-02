@@ -69,6 +69,31 @@ if (process.env.NODE_ENV === 'development') {
         data: filteredSubjects,
       });
     });
+    app.post('/api/subjects', (req: any, res: any) => {
+      if (!user) {
+        res.status(401).end();
+        return;
+      }
+      if (subjects.find((subject) => subject.name === req.body.name)) {
+        res.status(400).json({ message: 'Subject already exists' });
+        return;
+      }
+      const newSubject = {
+        id: subjects.length + 1,
+        author_id: user.id,
+        ...req.body,
+      };
+      subjects.push(newSubject);
+      res.json({ data: newSubject });
+    });
+    app.get('/api/subjects/:id', (req: any, res: any) => {
+      const id = subjects.findIndex((subject) => subject.id === +req.params.id);
+      if (id === -1) {
+        res.status(404).end();
+        return;
+      }
+      res.json({ data: subjects[id] });
+    });
     app.get('/api/questions', (req: any, res: any) => {
       res.json({ metadata: { total: questions.length }, data: questions });
     });
@@ -77,13 +102,13 @@ if (process.env.NODE_ENV === 'development') {
         res.status(401).end();
         return;
       }
-      const newQuestion = req.body;
-      questions.push({
+      const newQuestion = {
         id: questions.length + 1,
         author_id: user.id,
-        ...newQuestion,
-      });
-      res.json(newQuestion);
+        ...req.body,
+      };
+      questions.push(newQuestion);
+      res.json({ data: newQuestion });
     });
     app.put('/api/questions/:id', (req: any, res: any) => {
       const id = questions.findIndex(

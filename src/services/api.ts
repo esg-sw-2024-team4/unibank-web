@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { IMResponse, IProblem, ISubject } from '../interfaces';
+import { IMResponse, IProblem, ISResponse, ISubject } from '../interfaces';
 
 const instance: AxiosInstance = axios.create({
   headers: {
@@ -50,28 +50,45 @@ export const getSubjectsAll = async () => {
   }
 };
 
-export const getSubjectsByKeyword = async (keyword: string) => {
-  if (!keyword) {
-    throw new Error('Invalid keyword...');
+export const getSubjectsByKeyword = async (search: string) => {
+  if (!search) {
+    return getSubjectsAll;
   }
-  const res = await getSubjectsAll();
-  const allSubjects = res?.data || [];
-  return allSubjects.filter((subject) =>
-    subject.name.toLowerCase().includes(keyword.toLowerCase())
-  );
+  const res = await instance.get<IMResponse<ISubject>>('/api/subjects', {
+    params: { search },
+  });
+  const { data } = res;
+  return data;
+};
+
+export const postSubject = async (
+  token: string,
+  subject: Omit<ISubject, 'id'>
+) => {
+  try {
+    const res = await instance.post(
+      '/api/subjects',
+      subject,
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a subject:', error);
+  }
 };
 
 export const getSubjectById = async (subjectId: number) => {
   if (!subjectId) {
     throw new Error('Invalid subject id...');
   }
-  const res = await getSubjectsAll();
-  const allSubjects = res?.data || [];
-  const foundSubject = allSubjects.find((subject) => subject.id === subjectId);
-  if (!foundSubject) {
-    throw new Error('No subjects found...');
+  const res = await instance.get<ISResponse<ISubject>>(
+    `/api/subjects/${subjectId}`
+  );
+  if (!res.data) {
+    throw new Error('No subject found...');
   }
-  return foundSubject;
+  const { data } = res;
+  return data;
 };
 
 export const getProblemsAll = async () => {

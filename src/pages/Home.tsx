@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bigLogo from '../assets/UniBankBigLogo.svg';
 import nextVector from '../assets/nextVector.svg';
-import { getProblemsAll, getSubjectsAll } from '../services/api';
+//import { getProblemsAll, getSubjectsAll } from '../services/api';
 import { getProblemsAll, getSubjectsByKeyword } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 

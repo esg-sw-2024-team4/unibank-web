@@ -134,7 +134,10 @@ export const DivSubjectItemDescription = styled(Paragraph)`
 
 export const Div = styled.div`
   display: flex;
+  align-items: center;
   flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const SpanDiv = styled.div`

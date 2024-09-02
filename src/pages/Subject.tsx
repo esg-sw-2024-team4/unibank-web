@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
 import { getProblemsBySubjectId, getSubjectById } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
+import AuthorFilterSelect from '../components/filter/AuthorFilterComboBox';
 // import { useRecoilState } from 'recoil';
 // import { authState } from '../store/authAtom';
 
@@ -14,6 +15,12 @@ const Subject: FC = () => {
   // const [token] = useRecoilState(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
   const [problems, setProblems] = useState<IProblem[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string>('');
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -37,24 +44,31 @@ const Subject: FC = () => {
   }, [id]);
   return (
     <S.SubjectContainer>
-      <div>
-        <h1>{subject?.name}</h1>
-      </div>
+      <S.TitleDiv>
+        <S.H1>{subject?.name}</S.H1>
+        <p>{subject?.description}</p>
+      </S.TitleDiv>
       <S.ProblemContainer>
         <S.ProblemBankSection>
-          <h2>문제은행</h2>
-          {/* 문제 리스트를 여기에 추가 */}
+          <S.FilterContainer>
+            <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
+            <AuthorFilterSelect
+              selectedOption={selectedOption}
+              onOptionChange={handleOptionChange}
+            />
+          </S.FilterContainer>
           <S.DivProblemList>
             {problems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
-                {problem.question_text}
-                console.log({problem.question_text});
+                <p>
+                  <strong>문제 {problem.id}.</strong> {problem.question_text}
+                </p>
               </S.ParagraphProblemItem>
             ))}
           </S.DivProblemList>
         </S.ProblemBankSection>
       </S.ProblemContainer>
-      <br />
+
       <S.WriteQuestionBtn
         type="button"
         onClick={() => {

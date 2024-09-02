@@ -31,26 +31,22 @@ if (process.env.NODE_ENV === 'development') {
       },
     ];
     const questions = [
-      [
-        {
-          id: 1,
-          subject_id: 1,
-          author_id: 1,
-          question_text: 'What is 2+2?',
-          question_type: 'multiple_choice',
-          image_url: 'http://example.com/image1.png',
-          source: 'Basic Arithmetic Textbook',
-        },
-        {
-          id: 2,
-          subject_id: 2,
-          author_id: 2,
-          question_text: 'Explain the theory of relativity.',
-          question_type: 'short_answer',
-          image_url: null,
-          source: 'Advanced Physics Lecture Notes',
-        },
-      ],
+      {
+        id: 1,
+        subject_id: 1,
+        author_id: 1,
+        question_text: 'What is 2+2?',
+        image_url: 'http://example.com/image1.png',
+        source: 'Basic Arithmetic Textbook',
+      },
+      {
+        id: 2,
+        subject_id: 2,
+        author_id: 2,
+        question_text: 'Explain the theory of relativity.',
+        image_url: '',
+        source: 'Advanced Physics Lecture Notes',
+      },
     ];
     app.get('/api/auth/check', (req: any, res: any) => {
       user = {
@@ -62,10 +58,79 @@ if (process.env.NODE_ENV === 'development') {
       res.json(user);
     });
     app.get('/api/subjects', (req: any, res: any) => {
-      res.json({ metadata: { total: subjects.length }, data: subjects });
+      const { search } = req.query;
+      const filteredSubjects = !search
+        ? subjects
+        : subjects.filter((subject) =>
+            subject.name.toLowerCase().includes(search.toLowerCase())
+          );
+      res.json({
+        metadata: { total: filteredSubjects.length },
+        data: filteredSubjects,
+      });
+    });
+    app.post('/api/subjects', (req: any, res: any) => {
+      if (!user) {
+        res.status(401).end();
+        return;
+      }
+      if (subjects.find((subject) => subject.name === req.body.name)) {
+        res.status(400).json({ message: 'Subject already exists' });
+        return;
+      }
+      const newSubject = {
+        id: subjects.length + 1,
+        author_id: user.id,
+        ...req.body,
+      };
+      subjects.push(newSubject);
+      res.json({ data: newSubject });
+    });
+    app.get('/api/subjects/:id', (req: any, res: any) => {
+      const id = subjects.findIndex((subject) => subject.id === +req.params.id);
+      if (id === -1) {
+        res.status(404).end();
+        return;
+      }
+      res.json({ data: subjects[id] });
     });
     app.get('/api/questions', (req: any, res: any) => {
       res.json({ metadata: { total: questions.length }, data: questions });
+    });
+    app.post('/api/questions', (req: any, res: any) => {
+      if (!user) {
+        res.status(401).end();
+        return;
+      }
+      const newQuestion = {
+        id: questions.length + 1,
+        author_id: user.id,
+        ...req.body,
+      };
+      questions.push(newQuestion);
+      res.json({ data: newQuestion });
+    });
+    app.put('/api/questions/:id', (req: any, res: any) => {
+      const id = questions.findIndex(
+        (question) => question.id === +req.params.id
+      );
+      if (id === -1) {
+        res.status(404).end();
+        return;
+      }
+      questions[id] = { ...questions[id], ...req.body };
+      res.status(204).end();
+    });
+    app.delete('/api/questions/:id', (req: any, res: any) => {
+      const id = questions.findIndex(
+        (question) => question.id === +req.params.id
+      );
+      if (id === -1) {
+        res.status(404).end();
+        return;
+      }
+      questions.splice(id, 1);
+      res.status(204).end();
     });
   });
 }

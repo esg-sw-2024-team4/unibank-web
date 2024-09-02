@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { IMResponse, IProblem, ISubject } from '../interfaces';
+import { IMResponse, IProblem, ISResponse, ISubject } from '../interfaces';
 
 const instance: AxiosInstance = axios.create({
   headers: {
@@ -40,13 +40,27 @@ export const authenticate = () => {
 export const checkToken = (token: string) =>
   instance.get('/api/auth/check', withBearer(token));
 
-export const getSubjectsAll = async () => {
+export const getSubjectsByKeyword = async (search: string) => {
+  const res = await instance.get<IMResponse<ISubject>>('/api/subjects', {
+    params: { search },
+  });
+  const { data } = res;
+  return data;
+};
+
+export const postSubject = async (
+  token: string,
+  subject: Omit<ISubject, 'id'>
+) => {
   try {
-    const res = await instance.get<IMResponse<ISubject>>('/api/subjects');
-    const { data } = res;
-    return data;
+    const res = await instance.post(
+      '/api/subjects',
+      subject,
+      withBearer(token)
+    );
+    return res.data;
   } catch (error) {
-    console.error('Failed to fetch subject data:', error);
+    console.error('Failed to post a subject:', error);
   }
 };
 
@@ -54,13 +68,14 @@ export const getSubjectById = async (subjectId: number) => {
   if (!subjectId) {
     throw new Error('Invalid subject id...');
   }
-  const res = await getSubjectsAll();
-  const allSubjects = res?.data || [];
-  const foundSubject = allSubjects.find((subject) => subject.id === subjectId);
-  if (!foundSubject) {
-    throw new Error('No subjects found...');
+  const res = await instance.get<ISResponse<ISubject>>(
+    `/api/subjects/${subjectId}`
+  );
+  if (!res.data) {
+    throw new Error('No subject found...');
   }
-  return foundSubject;
+  const { data } = res;
+  return data;
 };
 
 export const getProblemsAll = async () => {
@@ -80,4 +95,51 @@ export const getProblemsBySubjectId = async (subjectId: number) => {
   const res = await getProblemsAll();
   const allProblems = res?.data || [];
   return allProblems.filter((problem) => problem.subject_id === subjectId);
+};
+
+export const postProblem = async (
+  token: string,
+  problem: Omit<IProblem, 'id'>
+) => {
+  try {
+    const res = await instance.post(
+      '/api/questions',
+      problem,
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
+};
+
+export const putProblem = async (token: string, problem: IProblem) => {
+  try {
+    const { id, subject_id, question_text, image_url, source } = problem;
+    const res = await instance.put<IProblem>(
+      `/api/questions/${id}`,
+      {
+        subject_id,
+        question_text,
+        image_url,
+        source,
+      },
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
+};
+
+export const deleteProblem = async (token: string, id: number) => {
+  try {
+    const res = await instance.delete<IProblem>(
+      `/api/questions/${id}`,
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
 };

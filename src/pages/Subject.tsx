@@ -5,10 +5,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
 import { getProblemsBySubjectId, getSubjectById } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
+// import { useRecoilState } from 'recoil';
+// import { authState } from '../store/authAtom';
 
 const Subject: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  // const [token] = useRecoilState(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
   const [problems, setProblems] = useState<IProblem[]>([]);
   useEffect(() => {
@@ -17,7 +20,7 @@ const Subject: FC = () => {
         if (!id || isNaN(+id)) {
           throw new Error('Invalid request...');
         }
-        const data = await getSubjectById(+id);
+        const { data } = await getSubjectById(+id);
         if (data) {
           setSubject(data);
           getProblemsBySubjectId(+id).then((data) => {
@@ -27,8 +30,8 @@ const Subject: FC = () => {
           });
         }
       } catch (err) {
-        navigate(PATHS.notFound);
         console.error(err);
+        navigate(PATHS.notFound);
       }
     })();
   }, [id]);

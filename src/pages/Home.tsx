@@ -3,11 +3,7 @@ import * as S from './Home.styles';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bigLogo from '../assets/UniBankBigLogo.svg';
-import {
-  getProblemsAll,
-  getSubjectsAll,
-  searchSubjects,
-} from '../services/api';
+import { getProblemsAll, getSubjectsByKeyword } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 
 const Home: FC = () => {
@@ -18,9 +14,8 @@ const Home: FC = () => {
   const [filteredSubjectList, setFilteredSubjectList] = useState<ISubject[]>(
     []
   );
-
   useEffect(() => {
-    getSubjectsAll().then((data) => {
+    getSubjectsByKeyword('').then((data) => {
       if (data) {
         const { data: fetchedSubjectsAll } = data;
         // setSubjectList(fetchedSubjectsAll);
@@ -41,8 +36,11 @@ const Home: FC = () => {
 
   const handleSearch = async () => {
     console.log('검색');
-    const filtered = await searchSubjects(searchTerm);
-    setFilteredSubjectList(filtered || []); // undefined일 경우 빈 배열로 처리
+    const data = await getSubjectsByKeyword(searchTerm);
+    if (data) {
+      const { data: fetchedSubjectsByKeyword } = data;
+      setFilteredSubjectList(fetchedSubjectsByKeyword);
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

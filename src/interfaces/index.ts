@@ -22,7 +22,6 @@ export interface IProblem {
   subject_id: number;
   author_id: number;
   question_text: string;
-  question_type: string;
   image_url: string;
   source: string;
 }

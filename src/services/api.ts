@@ -49,7 +49,7 @@ export const getSubjectsAll = async () => {
     console.error('Failed to fetch subject data:', error);
   }
 };
-
+// a
 export const getSubjectById = async (subjectId: number) => {
   if (!subjectId) {
     throw new Error('Invalid subject id...');

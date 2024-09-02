@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'development') {
         source: 'Advanced Physics Lecture Notes',
       },
     ];
-    app.get('/api/auth/check', (req: any, res: any) => {
+    app.get('/api/auth/check', (_: any, res: any) => {
       user = {
         id: 1,
         name: 'admin',
@@ -94,7 +94,7 @@ if (process.env.NODE_ENV === 'development') {
       }
       res.json({ data: subjects[id] });
     });
-    app.get('/api/questions', (req: any, res: any) => {
+    app.get('/api/questions', (_: any, res: any) => {
       res.json({ metadata: { total: questions.length }, data: questions });
     });
     app.post('/api/questions', (req: any, res: any) => {

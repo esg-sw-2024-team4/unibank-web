@@ -8,13 +8,13 @@ import { IProblem, ISubject } from '../interfaces';
 import AuthorFilter from '../components/filter/AuthorFilter';
 import SolvedFilter from '../components/filter/SolvedFilter';
 import FavoriteFilter from '../components/filter/FavoriteFilter';
-// import { useRecoilState } from 'recoil';
-// import { authState } from '../store/authAtom';
+import { useRecoilState } from 'recoil';
+import { authState } from '../store/authAtom';
 
 const Subject: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // const [token] = useRecoilState(authState);
+  const [token] = useRecoilState(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
   const [problems, setProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
@@ -54,17 +54,19 @@ const Subject: FC = () => {
         <S.ProblemBankSection>
           <S.SubjectHeader>
             <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
-            <S.FilterContainer>
-              <AuthorFilter
-                selectedOption={selectedOption}
-                onOptionChange={handleOptionChange}
-              />
-              <SolvedFilter
-                selectedOption={selectedOption}
-                onOptionChange={handleOptionChange}
-              />
-              <FavoriteFilter />
-            </S.FilterContainer>
+            {token.isAuthenticated && (
+              <S.FilterContainer>
+                <AuthorFilter
+                  selectedOption={selectedOption}
+                  onOptionChange={handleOptionChange}
+                />
+                <SolvedFilter
+                  selectedOption={selectedOption}
+                  onOptionChange={handleOptionChange}
+                />
+                <FavoriteFilter />
+              </S.FilterContainer>
+            )}
           </S.SubjectHeader>
           <S.DivProblemList>
             {problems.map((problem) => (
@@ -77,17 +79,18 @@ const Subject: FC = () => {
           </S.DivProblemList>
         </S.ProblemBankSection>
       </S.ProblemContainer>
-
-      <S.WriteQuestionBtn
-        type="button"
-        onClick={() => {
-          navigate(`/writequestion/${id}`, {
-            state: { subject_id: id },
-          });
-        }}
-      >
-        문제 등록
-      </S.WriteQuestionBtn>
+      {token.isAuthenticated && (
+        <S.WriteQuestionBtn
+          type="button"
+          onClick={() => {
+            navigate(`/writequestion/${id}`, {
+              state: { subject_id: id },
+            });
+          }}
+        >
+          문제 등록
+        </S.WriteQuestionBtn>
+      )}
     </S.SubjectContainer>
   );
 };

@@ -43,7 +43,8 @@ if (process.env.NODE_ENV === 'development') {
         id: 2,
         subject_id: 1,
         author_id: 2,
-        question_text: '다음 편미분방정식의 계수와 독립 및 종속변수에 대하여 설명하라',
+        question_text:
+          '다음 편미분방정식의 계수와 독립 및 종속변수에 대하여 설명하라',
         image_url: 'http://example.com/image1.png',
         source: 'Basic Arithmetic Textbook',
       },

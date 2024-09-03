@@ -10,7 +10,7 @@ export const FilterComboBox = styled.select`
   padding: 8px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: white;
   cursor: pointer;
 

@@ -15,6 +15,7 @@ const Subject: FC = () => {
   const [token] = useRecoilState(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
   const [problems, setProblems] = useState<IProblem[]>([]);
+  const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -30,11 +31,11 @@ const Subject: FC = () => {
         const { data } = await getSubjectById(+id);
         if (data) {
           setSubject(data);
-          getProblemsBySubjectId(+id).then((data) => {
-            if (data) {
-              setProblems(data);
-            }
-          });
+          const problemsData = await getProblemsBySubjectId(+id);
+          if (problemsData) {
+            setProblems(problemsData);
+            setFilteredProblems(problemsData);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -42,6 +43,23 @@ const Subject: FC = () => {
       }
     })();
   }, [id]);
+
+  useEffect(() => {
+    const userId = localStorage.getItem('id');
+    if (!userId) return;
+    let filtered = problems;
+    if (selectedOption === 'myProblems') {
+      filtered = problems.filter(
+        (problem) => problem.author_id === Number(userId)
+      );
+    } else if (selectedOption === 'otherMembersProblems') {
+      filtered = problems.filter(
+        (problem) => problem.author_id !== Number(userId)
+      );
+    }
+    setFilteredProblems(filtered);
+  }, [selectedOption, problems]);
+
   return (
     <S.SubjectContainer>
       <S.TitleDiv>
@@ -60,7 +78,7 @@ const Subject: FC = () => {
             )}
           </S.FilterContainer>
           <S.DivProblemList>
-            {problems.map((problem) => (
+            {filteredProblems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
                 <p>
                   <strong>문제 {problem.id}.</strong> {problem.question_text}

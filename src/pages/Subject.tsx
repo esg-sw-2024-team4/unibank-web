@@ -47,7 +47,7 @@ const Subject: FC = () => {
   }, [id]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('id');
+    const userId = token.id;
     if (!userId) return;
     let filtered = problems;
     if (selectedOption === 'myProblems') {
@@ -61,7 +61,7 @@ const Subject: FC = () => {
     }
     setFilteredProblems(filtered);
   }, [selectedOption, problems]);
-
+  console.log(problems);
   return (
     <S.SubjectContainer>
       <S.TitleDiv>

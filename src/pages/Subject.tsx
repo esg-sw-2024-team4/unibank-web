@@ -6,13 +6,13 @@ import { PATHS } from '../routes/Routes';
 import { getProblemsBySubjectId, getSubjectById } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 import AuthorFilterSelect from '../components/filter/AuthorFilterComboBox';
-// import { useRecoilState } from 'recoil';
-// import { authState } from '../store/authAtom';
+import { useRecoilState } from 'recoil';
+import { authState } from '../store/authAtom';
 
 const Subject: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // const [token] = useRecoilState(authState);
+  const [token] = useRecoilState(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
   const [problems, setProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
@@ -52,10 +52,12 @@ const Subject: FC = () => {
         <S.ProblemBankSection>
           <S.FilterContainer>
             <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
-            <AuthorFilterSelect
-              selectedOption={selectedOption}
-              onOptionChange={handleOptionChange}
-            />
+            {token.isAuthenticated && (
+              <AuthorFilterSelect
+                selectedOption={selectedOption}
+                onOptionChange={handleOptionChange}
+              />
+            )}
           </S.FilterContainer>
           <S.DivProblemList>
             {problems.map((problem) => (
@@ -68,17 +70,18 @@ const Subject: FC = () => {
           </S.DivProblemList>
         </S.ProblemBankSection>
       </S.ProblemContainer>
-
-      <S.WriteQuestionBtn
-        type="button"
-        onClick={() => {
-          navigate(`/writequestion/${id}`, {
-            state: { subject_id: id },
-          });
-        }}
-      >
-        문제 등록
-      </S.WriteQuestionBtn>
+      {token.isAuthenticated && (
+        <S.WriteQuestionBtn
+          type="button"
+          onClick={() => {
+            navigate(`/writequestion/${id}`, {
+              state: { subject_id: id },
+            });
+          }}
+        >
+          문제 등록
+        </S.WriteQuestionBtn>
+      )}
     </S.SubjectContainer>
   );
 };

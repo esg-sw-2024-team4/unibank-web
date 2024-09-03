@@ -5,7 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
 import { getProblemsBySubjectId, getSubjectById } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
-import AuthorFilterSelect from '../components/filter/AuthorFilterComboBox';
+import AuthorFilter from '../components/filter/AuthorFilter';
+import SolvedFilter from '../components/filter/SolvedFilter';
+import FavoriteFilter from '../components/filter/FavoriteFilter';
 // import { useRecoilState } from 'recoil';
 // import { authState } from '../store/authAtom';
 
@@ -50,13 +52,20 @@ const Subject: FC = () => {
       </S.TitleDiv>
       <S.ProblemContainer>
         <S.ProblemBankSection>
-          <S.FilterContainer>
+          <S.SubjectHeader>
             <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
-            <AuthorFilterSelect
-              selectedOption={selectedOption}
-              onOptionChange={handleOptionChange}
-            />
-          </S.FilterContainer>
+            <S.FilterContainer>
+              <AuthorFilter
+                selectedOption={selectedOption}
+                onOptionChange={handleOptionChange}
+              />
+              <SolvedFilter
+                selectedOption={selectedOption}
+                onOptionChange={handleOptionChange}
+              />
+              <FavoriteFilter />
+            </S.FilterContainer>
+          </S.SubjectHeader>
           <S.DivProblemList>
             {problems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>

@@ -26,7 +26,6 @@ export const ProblemContainer = styled.div`
   border: 0.1px solid lightgray;
   border-radius: 30px;
   padding: 15px;
-  padding-left: 30px;
 `;
 
 export const ProblemBankSection = styled.div`
@@ -42,6 +41,7 @@ export const DivProblemList = styled.div`
   margin-top: 10px;
   /* 문제 텍스트 크기 조정 */
   font-size: 16px;
+  padding-left: 10px;
 `;
 
 export const ParagraphProblemItem = styled.p`
@@ -67,9 +67,19 @@ export const WriteQuestionBtn = styled.button`
   }
 `;
 
-export const FilterContainer = styled.div`
-  display: flex;
+export const SubjectHeader = styled.div`
   width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  padding: 10px;
+`;
+
+export const FilterContainer = styled.div`
+  padding-left: 0px;
+  padding-right: 25px;
+  display: flex;
+  width: 55%;
   align-items: center;
   justify-content: space-between;
 `;

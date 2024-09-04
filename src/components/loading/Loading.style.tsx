@@ -10,13 +10,13 @@ const fadeInOut = keyframes`
 // Define the scale-up animation
 const scaleUp = keyframes`
   0% {
-    transform: scale(1);
+    transform: scale(0.4);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(0.45);
   }
   100% {
-    transform: scale(1);
+    transform: scale(0.4);
   }
 `;
 
@@ -51,6 +51,6 @@ export const LoadingText = styled.p`
   font-family: Inter, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
-  margin-top: 1.5rem;
+  margin-top: 0rem;
   animation: ${fadeInOut} 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 `;

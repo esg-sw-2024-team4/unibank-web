@@ -81,9 +81,10 @@ export const getSubjectById = async (subjectId: number) => {
   return data;
 };
 
-export const getProblemsAll = async () => {
+export const getProblemsAll = async (subjectId?: number) => {
   try {
-    const res = await instance.get<IMResponse<IProblem>>('/api/questions');
+    const qs = subjectId ? `?subject_id=${subjectId}` : '';
+    const res = await instance.get<IMResponse<IProblem>>(`/api/questions${qs}`);
     const { data } = res;
     return data;
   } catch (error) {

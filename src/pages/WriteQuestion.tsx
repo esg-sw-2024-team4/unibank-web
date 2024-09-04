@@ -6,7 +6,7 @@ import { authState } from '../store/authAtom';
 import DocumentIcon from '../assets/DocumentIcon.svg';
 import IconX from '../assets/dismiss.svg';
 import SelectSubjectModal from '../components/write/SelectSubjectModal';
-import { postProblem } from '../services/api';
+import { postProblem, putProblem } from '../services/api'; // Axios 인스턴스를 사용하는 API 함수
 import { IProblem } from '../interfaces';
 
 const WriteQuestion: FC = () => {
@@ -17,7 +17,7 @@ const WriteQuestion: FC = () => {
   const [questionType] = useState('객관식 문제');
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
   const [explanation, setExplanation] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [source, setSource] = useState('');
   const [selectedSubjectName, setSelectedSubjectName] = useState<string | null>(
     null
@@ -49,23 +49,21 @@ const WriteQuestion: FC = () => {
   const handleSubmit = async () => {
     if (!auth.isAuthenticated || !auth.accessToken) {
       console.error('No token found');
-      alert('로그인 후 다시 시도해주세요.'); // 적절한 사용자 피드백 제공
+      alert('로그인 후 다시 시도해주세요.');
       return;
     }
 
-    // Check if selectedSubjectId is a number
     if (selectedSubjectId === null || isNaN(selectedSubjectId)) {
       console.error('Invalid Subject ID');
       alert('유효하지 않은 과목 ID입니다.');
       return;
     }
 
-    // 'options' 배열 생성
     const options = [
       {
         option: 1,
         option_text: '답안 1 내용',
-        is_correct: correctAnswer === 1, // correctAnswer가 1이면 true
+        is_correct: correctAnswer === 1,
       },
       {
         option: 2,
@@ -88,47 +86,35 @@ const WriteQuestion: FC = () => {
       subject_id: selectedSubjectId,
       title: questionText,
       description: explanation,
-      image_url: imageUrl,
+      image_url: imageUrl || '', // Optional field, provide default empty string
       source: source,
       options: options,
     };
 
     const formData = new FormData();
-    formData.append(
-      'questionData',
-      new Blob([JSON.stringify(questionData)], { type: 'application/json' })
-    );
+    formData.append('questionData', JSON.stringify(questionData));
 
     // 이미지가 있다면 FormData에 추가
     if (imageUrl) {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
-      formData.append('image', blob);
+      formData.append('image', blob, 'image.jpg'); // blob과 파일명을 설정
     }
 
     try {
-      // const response = await fetch(`/api/questions`, {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Bearer ${auth.accessToken}`, // Recoil 상태에서 가져온 토큰 사용
-      //     // 'Content-Type': 'multipart/form-data', // 이 헤더는 fetch가 자동으로 설정하므로 주석 처리
-      //   },
-      //   body: formData,
-      // });
-
-      // if (!response.ok) {
-      //   throw new Error('문제 등록에 실패했습니다.');
-      // }
-      await postProblem(auth.accessToken, questionData);
-
+      // Axios를 사용하여 문제 데이터 전송
+      //await postProblem(auth.accessToken, questionData);
+      await putProblem(auth.accessToken, questionData);
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);
+      alert('문제 등록에 실패했습니다.');
     }
   };
 
   return (
     <S.SubjectContainer>
+      {/* 컴포넌트 UI 코드 그대로 유지 */}
       <S.TitleDiv>
         <S.Icon src={DocumentIcon} alt="Document Icon" />
         <S.H1>문제 등록하기</S.H1>
@@ -193,11 +179,8 @@ const WriteQuestion: FC = () => {
       </S.Text>
       <S.PostButton
         onClick={async () => {
-          console.log(selectedSubjectName);
-          console.log(selectedSubjectId);
-          console.log(typeof selectedSubjectId); // 'number', 'string' 등
           if (selectedSubjectName !== null) {
-            await handleSubmit(); // handleSubmit 함수 내에서 navigate 호출됨
+            await handleSubmit();
           } else {
             alert('과목을 선택해 주세요.');
           }
@@ -209,7 +192,7 @@ const WriteQuestion: FC = () => {
       {isModalOpen && (
         <SelectSubjectModal
           onClose={closeModal}
-          onSelect={handleSubjectSelect} // 선택된 과목 ID와 이름을 받는 함수
+          onSelect={handleSubjectSelect}
         />
       )}
     </S.SubjectContainer>

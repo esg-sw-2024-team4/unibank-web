@@ -30,17 +30,19 @@ const Subject: FC = () => {
         if (!id || isNaN(+id)) {
           throw new Error('Invalid request...');
         }
-        const { data } = await getSubjectById(+id);
-        if (data) {
-          setSubject(data);
+        const subjectResponse = await getSubjectById(+id);
+        console.log('Subject Data:', subjectResponse);
+        if (subjectResponse.data) {
+          setSubject(subjectResponse.data);
           const problemsData = await getProblemsBySubjectId(+id);
+          console.log('Problems Data:', problemsData);
           if (problemsData) {
             setProblems(problemsData);
             setFilteredProblems(problemsData);
           }
         }
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching data:', err);
         navigate(PATHS.notFound);
       }
     })();
@@ -49,19 +51,21 @@ const Subject: FC = () => {
   useEffect(() => {
     const userId = token.id;
     if (!userId) return;
-    //let filtered = problems;
     /*
+    let filtered = problems;
     if (selectedOption === 'myProblems') {
-      filtered = problems.filter(
+      filtered = problems
+        .filter
         (problem) => problem.author_id === Number(userId)
-      );
+        ();
     } else if (selectedOption === 'otherMembersProblems') {
-      filtered = problems.filter(
-        //(problem) => problem.author_id !== Number(userId)
-      );
+      filtered = problems
+        .filter
+        (problem) => problem.author_id !== Number(userId)
+        ();
     }
-      */
-    //setFilteredProblems(filtered);
+        */
+    setFilteredProblems(problems);
   }, [selectedOption, problems]);
   console.log(problems);
   return (
@@ -89,7 +93,7 @@ const Subject: FC = () => {
             )}
           </S.SubjectHeader>
           <S.DivProblemList>
-            {filteredProblems.map((problem) => (
+            {problems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
                 <p>
                   <strong>문제 {problem.id}.</strong> {problem.title}

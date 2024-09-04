@@ -4,7 +4,6 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bigLogo from '../assets/UniBankBigLogo.svg';
 import nextVector from '../assets/nextVector.svg';
-//import { getProblemsAll, getSubjectsAll } from '../services/api';
 import { getProblemsAll, getSubjectsByKeyword } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 
@@ -17,23 +16,24 @@ const Home: FC = () => {
     []
   );
   useEffect(() => {
-    getSubjectsByKeyword('').then((data) => {
-      if (data) {
-        const { data: fetchedSubjectsAll } = data;
-        // setSubjectList(fetchedSubjectsAll);
+    (async () => {
+      const subjectsData = await getSubjectsByKeyword('');
+      console.log('Subjects Data:', subjectsData);
+      if (subjectsData) {
+        const { data: fetchedSubjectsAll } = subjectsData;
         setFilteredSubjectList(fetchedSubjectsAll);
       }
-    });
-    getProblemsAll().then((data) => {
-      if (data) {
-        const { data: fetchedProblemsAll } = data;
+      const problemsData = await getProblemsAll();
+      console.log('Problems Data:', problemsData);
+      if (problemsData) {
+        const { data: fetchedProblemsAll } = problemsData;
         setProblemList(fetchedProblemsAll);
       }
-    });
+    })();
   }, []);
 
   useEffect(() => {
-    console.log(problemList);
+    //console.log(problemList);
   }, [problemList]);
 
   const handleSearch = async () => {

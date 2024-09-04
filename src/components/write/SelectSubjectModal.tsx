@@ -4,7 +4,7 @@ import { getSubjectsByKeyword } from '../../services/api';
 import { ISubject } from '../../interfaces';
 
 interface SelectSubjectModalProps {
-  onSelect: (selectedSubjectId: number) => void;
+  onSelect: (selectedSubjectName: string) => void;
   onClose: () => void;
 }
 
@@ -37,7 +37,7 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
             <S.SubjectItem
               key={subject.id}
               onClick={() => {
-                onSelect(subject.id); // 부모 컴포넌트로 선택된 과목 ID 전달
+                onSelect(subject.name); // 부모 컴포넌트로 선택된 과목 이름 전달
                 onClose(); // 모달 닫기
               }}
             >

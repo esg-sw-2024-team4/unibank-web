@@ -9,7 +9,7 @@ const Loading = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 1500); // 1.5초 후 로딩 종료
+    }, 2000); // 1.5초 후 로딩 종료
 
     return () => clearTimeout(timer);
   }, []);

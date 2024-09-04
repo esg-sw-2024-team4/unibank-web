@@ -3,7 +3,7 @@ import * as S from './Subject.styles';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
-import { getProblemsBySubjectId, getSubjectById } from '../services/api';
+import { getProblemsAll, getSubjectById } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 import AuthorFilter from '../components/filter/AuthorFilter';
 import SolvedFilter from '../components/filter/SolvedFilter';
@@ -30,17 +30,20 @@ const Subject: FC = () => {
         if (!id || isNaN(+id)) {
           throw new Error('Invalid request...');
         }
-        const { data } = await getSubjectById(+id);
-        if (data) {
-          setSubject(data);
-          const problemsData = await getProblemsBySubjectId(+id);
-          if (problemsData) {
-            setProblems(problemsData);
-            setFilteredProblems(problemsData);
+        const responseSubject = await getSubjectById(+id);
+        if (responseSubject) {
+          setSubject(responseSubject.data);
+          const responseProblems = await getProblemsAll();
+          if (responseProblems) {
+            setProblems(responseProblems.data);
+          }
+          const responseProblemsBySubject = await getProblemsAll(+id);
+          if (responseProblemsBySubject) {
+            setFilteredProblems(responseProblemsBySubject.data);
           }
         }
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching data:', err);
         navigate(PATHS.notFound);
       }
     })();
@@ -49,19 +52,21 @@ const Subject: FC = () => {
   useEffect(() => {
     const userId = token.id;
     if (!userId) return;
-    //let filtered = problems;
     /*
+    let filtered = problems;
     if (selectedOption === 'myProblems') {
-      filtered = problems.filter(
+      filtered = problems
+        .filter
         (problem) => problem.author_id === Number(userId)
-      );
+        ();
     } else if (selectedOption === 'otherMembersProblems') {
-      filtered = problems.filter(
-        //(problem) => problem.author_id !== Number(userId)
-      );
+      filtered = problems
+        .filter
+        (problem) => problem.author_id !== Number(userId)
+        ();
     }
-      */
-    //setFilteredProblems(filtered);
+        */
+    setFilteredProblems(problems);
   }, [selectedOption, problems]);
   console.log(problems);
   return (
@@ -89,7 +94,7 @@ const Subject: FC = () => {
             )}
           </S.SubjectHeader>
           <S.DivProblemList>
-            {filteredProblems.map((problem) => (
+            {problems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
                 <p>
                   <strong>문제 {problem.id}.</strong> {problem.title}

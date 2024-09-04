@@ -93,7 +93,7 @@ export const ExitButton = styled.img`
 export const PostButton = styled.button`
   position: relative;
   left: 100%;
-  transform: translateX(-110%); /* 중앙 정렬을 위한 변환 */
+  transform: translateX(-110%); 
   margin-right: 0px;
   margin-top: 20px;
   padding: 15px 22px;

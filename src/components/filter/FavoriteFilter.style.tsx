@@ -4,6 +4,7 @@ export const InputWrapper = styled.div`
   display: flex;
   color: black;
   border: none;
+  white-space: nowrap;
 `;
 
 export const Check = styled.div`

@@ -60,7 +60,7 @@ export const DivSearchBar = styled.div`
   /* max-width: 400px; */
   width: 60%;
   box-shadow: 0px 5px 30px #e1e4ff;
-  z-index: 10;
+  z-index: 5;
 `;
 
 export const InputSearch = styled.input`
@@ -82,6 +82,7 @@ export const ButtonSearch = styled.button`
   padding: 7px;
   padding-right: 20px;
   color: #333;
+  z-index: 10;
 
  &:hover {
     background: #f0f0f0;

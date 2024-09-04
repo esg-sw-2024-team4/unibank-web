@@ -6,10 +6,12 @@ import { authState } from '../store/authAtom';
 import DocumentIcon from '../assets/DocumentIcon.svg';
 import IconX from '../assets/dismiss.svg';
 import SelectSubjectModal from '../components/write/SelectSubjectModal';
+import { postProblem } from '../services/api';
+import { IProblem } from '../interfaces';
 
 const WriteQuestion: FC = () => {
   const navigate = useNavigate();
-  const auth = useRecoilValue(authState); // Recoil 상태를 사용하여 인증 상태를 가져옵니다.
+  const auth = useRecoilValue(authState);
 
   const [questionText, setQuestionText] = useState('');
   const [questionType] = useState('객관식 문제');
@@ -62,27 +64,27 @@ const WriteQuestion: FC = () => {
     const options = [
       {
         option: 1,
-        option_text: '답안 1 내용', // 여기에 실제 답안을 넣어야 함
+        option_text: '답안 1 내용',
         is_correct: correctAnswer === 1, // correctAnswer가 1이면 true
       },
       {
         option: 2,
-        option_text: '답안 2 내용', // 여기에 실제 답안을 넣어야 함
+        option_text: '답안 2 내용',
         is_correct: correctAnswer === 2,
       },
       {
         option: 3,
-        option_text: '답안 3 내용', // 여기에 실제 답안을 넣어야 함
+        option_text: '답안 3 내용',
         is_correct: correctAnswer === 3,
       },
       {
         option: 4,
-        option_text: '답안 4 내용', // 여기에 실제 답안을 넣어야 함
+        option_text: '답안 4 내용',
         is_correct: correctAnswer === 4,
       },
     ];
 
-    const questionData = {
+    const questionData: Omit<IProblem, 'id'> = {
       subject_id: selectedSubjectId,
       title: questionText,
       description: explanation,
@@ -105,18 +107,19 @@ const WriteQuestion: FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/questions`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`, // Recoil 상태에서 가져온 토큰 사용
-          // 'Content-Type': 'multipart/form-data', // 이 헤더는 fetch가 자동으로 설정하므로 주석 처리
-        },
-        body: formData,
-      });
+      //const response = await fetch(`/api/questions`, {
+      //method: 'POST',
+      //headers: {
+      //Authorization: `Bearer ${auth.accessToken}`, // Recoil 상태에서 가져온 토큰 사용
+      // 'Content-Type': 'multipart/form-data', // 이 헤더는 fetch가 자동으로 설정하므로 주석 처리
+      //},
+      //body: formData,
+      //});
 
-      if (!response.ok) {
-        throw new Error('문제 등록에 실패했습니다.');
-      }
+      //if (!response.ok) {
+      //throw new Error('문제 등록에 실패했습니다.');
+      //}
+      await postProblem(auth.accessToken, questionData);
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);

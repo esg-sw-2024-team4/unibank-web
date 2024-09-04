@@ -20,8 +20,15 @@ export interface ISubject {
 export interface IProblem {
   id: number;
   subject_id: number;
-  author_id: number;
-  question_text: string;
+  title: string;
+  description: string;
   image_url: string;
   source: string;
+  options: IOption[];
+}
+
+export interface IOption {
+  option: number;
+  option_text: string;
+  is_correct: boolean;
 }

@@ -92,7 +92,7 @@ const Subject: FC = () => {
             {filteredProblems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
                 <p>
-                  <strong>문제 {problem.id}.</strong> {problem.question_text}
+                  <strong>문제 {problem.id}.</strong> {problem.title}
                 </p>
               </S.ParagraphProblemItem>
             ))}

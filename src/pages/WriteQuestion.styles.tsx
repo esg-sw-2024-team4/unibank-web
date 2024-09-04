@@ -30,7 +30,7 @@ export const WriteContainer = styled.div`
   height: auto;
   border: 0.1px solid lightgray;
   border-radius: 30px;
-  padding: 15px;
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
 `;
@@ -42,12 +42,13 @@ export const InputWrapper = styled.div`
 `;
 
 export const Label = styled.label`
+  font-weight: bold;
   display: block;
   font-size: 16px;
   color: #333;
-  margin-right: 10px;
+  margin-left: 10px;
   width: 150px; /* 라벨의 너비를 고정하여 입력창과의 공간을 유지 */
-  text-align: right; /* 라벨을 오른쪽으로 정렬 */
+  text-align: left; /* 라벨을 오른쪽으로 정렬 */
 `;
 
 export const Input = styled.input`
@@ -89,32 +90,35 @@ export const ExitButton = styled.img`
 `;
 
 export const PostButton = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+  margin-left: 85%;
+  margin-top: 20px;
+  padding: 15px 22px;
   font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: 1px solid #ccc;
+  background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border-radius: 20px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #f0f0f0;
   }
 `;
 
 export const Button = styled.button`
   padding: 10px 20px;
-  background-color: #007bff;
+  margin-bottom: 40px;
+  background-color: #cbcbcb;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #b2b2b2;
   }
 `;
 

@@ -125,7 +125,7 @@ const WriteQuestion: FC = () => {
           }
         }}
       >
-        등록
+        등록하기
       </S.PostButton>
       {isModalOpen && (
         <SelectSubjectModal

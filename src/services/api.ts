@@ -30,8 +30,11 @@ export const authenticate = () => {
     height = 600,
     left = window.screenX + (window.outerWidth - width) / 2,
     top = window.screenY + (window.outerHeight - height) / 2;
+  console.log(import.meta.env.IS_FORCE_PRODUCTION);
   return window.open(
-    import.meta.env.DEV ? '/auth?token=abcd1234' : '/api/auth',
+    import.meta.env.VITE_IS_FORCE_PRODUCTION !== 'true' && import.meta.env.DEV
+      ? '/auth?token=abcd1234'
+      : `${import.meta.env.VITE_URL_API_SERVER}/auth`,
     'Login via Google...',
     `width=${width},height=${height},left=${left},top=${top}`
   );

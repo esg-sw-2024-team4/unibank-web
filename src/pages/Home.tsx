@@ -8,7 +8,6 @@ import { getSubjectsByKeyword } from '../services/api';
 import { ISubject } from '../interfaces';
 import useDebounce from '../hooks/useDebounce';
 
-
 const Home: FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,26 +16,8 @@ const Home: FC = () => {
   );
   const confirmedSearchTerm = useDebounce(searchTerm, 500);
   useEffect(() => {
-    (async () => {
-      const subjectsData = await getSubjectsByKeyword('');
-      console.log('Subjects Data:', subjectsData);
-      if (subjectsData) {
-        const { data: fetchedSubjectsAll } = subjectsData;
-        setFilteredSubjectList(fetchedSubjectsAll);
-      }
-      const problemsData = await getProblemsAll();
-      console.log('Problems Data:', problemsData);
-      if (problemsData) {
-        const { data: fetchedProblemsAll } = problemsData;
-        setProblemList(fetchedProblemsAll);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    //console.log(problemList);
-  }, [problemList]);
-
+    handleSearch();
+  }, [confirmedSearchTerm]);
   const handleSearch = async () => {
     const data = await getSubjectsByKeyword(confirmedSearchTerm || '');
     if (data) {

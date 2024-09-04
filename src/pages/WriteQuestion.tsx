@@ -6,7 +6,7 @@ import { authState } from '../store/authAtom';
 import DocumentIcon from '../assets/DocumentIcon.svg';
 import IconX from '../assets/dismiss.svg';
 import SelectSubjectModal from '../components/write/SelectSubjectModal';
-import { postProblem, putProblem } from '../services/api'; // Axios 인스턴스를 사용하는 API 함수
+import { postProblem } from '../services/api'; // Axios 인스턴스를 사용하는 API 함수
 import { IProblem } from '../interfaces';
 
 const WriteQuestion: FC = () => {
@@ -103,8 +103,8 @@ const WriteQuestion: FC = () => {
 
     try {
       // Axios를 사용하여 문제 데이터 전송
-      //await postProblem(auth.accessToken, questionData);
-      await putProblem(auth.accessToken, questionData);
+      await postProblem(auth.accessToken, questionData);
+      // await putProblem(auth.accessToken, { id: 1, ...questionData });
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);

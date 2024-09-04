@@ -2,12 +2,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Auth from '../components/auth/Auth';
 import Home from '../pages/Home';
 import Subject from '../pages/Subject';
+import WriteQuestion from '../pages/WriteQuestion';
 import BaseLayout from '../components/layout/Base';
 
 export const PATHS = {
   auth: '/auth',
   home: '/',
   subjectById: '/subjects',
+  write: '/write',
   notFound: '/404',
 } as const;
 
@@ -36,6 +38,14 @@ const AppRoutes = () => {
               }
             />
           </Route>
+          <Route
+            path={PATHS.write}
+            element={
+              <>
+                <WriteQuestion />
+              </>
+            }
+          />
           <Route path={PATHS.notFound} element={<div>Not Found</div>} />
         </Route>
       </Routes>

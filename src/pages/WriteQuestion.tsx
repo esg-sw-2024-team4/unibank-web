@@ -17,6 +17,9 @@ const WriteQuestion: FC = () => {
   const [selectedSubjectName, setSelectedSubjectName] = useState<string | null>(
     null
   );
+  const [selectedSubjectId, setSelectedSubjectId] = useState<number | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,14 +35,15 @@ const WriteQuestion: FC = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleSubjectSelect = (subjectName: string) => {
-    setSelectedSubjectName(subjectName); // 선택된 과목 이름 저장
+  const handleSubjectSelect = (subjectName: string, subjectId: number) => {
+    setSelectedSubjectName(subjectName);
+    setSelectedSubjectId(subjectId);
     closeModal();
   };
 
   const handleSubmit = async () => {
     const questionData = {
-      //subject_id: selectedSubjectId,
+      subject_id: selectedSubjectId,
       author_id: 1,
       question_text: questionText,
       question_type: questionType,
@@ -111,11 +115,22 @@ const WriteQuestion: FC = () => {
         </S.InputWrapper>
       </S.WriteContainer>
       <S.ExitButton src={IconX} onClick={onClickBackButton} />
-      <S.PostButton onClick={handleSubmit}>등록</S.PostButton>
+      <S.PostButton
+        onClick={async () => {
+          if (selectedSubjectId !== null) {
+            await handleSubmit();
+            navigate(`/subjects/${selectedSubjectId}`);
+          } else {
+            alert('과목을 선택해 주세요.');
+          }
+        }}
+      >
+        등록
+      </S.PostButton>
       {isModalOpen && (
         <SelectSubjectModal
           onClose={closeModal}
-          onSelect={handleSubjectSelect} // 선택된 과목 ID를 받는 함수
+          onSelect={handleSubjectSelect} // 선택된 과목 ID와 이름을 받는 함수
         />
       )}
     </S.SubjectContainer>

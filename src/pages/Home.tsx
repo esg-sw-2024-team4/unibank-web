@@ -87,6 +87,24 @@ const Home: FC = () => {
             </S.Div>
           </S.DivSubjectItem>
         ))}
+
+        {filteredSubjectList.map((subject) => (
+          <S.DivSubjectItem key={subject.id}>
+            <S.Div>
+              <S.SpanDiv>
+                <S.DivSubjectItemTitle
+                  onClick={() => navigate(`/subjects/${subject.id}`)}
+                >
+                  {subject.name}
+                </S.DivSubjectItemTitle>
+              </S.SpanDiv>
+              <S.NextButton
+                src={nextVector}
+                onClick={() => navigate(`/subjects/${subject.id}`)}
+              ></S.NextButton>
+            </S.Div>
+          </S.DivSubjectItem>
+        ))}
       </S.DivSubjectList>
     </S.DivHomeContainer>
   );

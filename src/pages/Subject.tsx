@@ -101,9 +101,7 @@ const Subject: FC = () => {
         <S.WriteQuestionBtn
           type="button"
           onClick={() => {
-            navigate(`/writequestion/${id}`, {
-              state: { subject_id: id },
-            });
+            navigate(`/write`);
           }}
         >
           문제 등록

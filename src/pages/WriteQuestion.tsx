@@ -14,7 +14,7 @@ const WriteQuestion: FC = () => {
   const [explanation, setExplanation] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [source, setSource] = useState('');
-  const [selectedSubjectId, setSelectedSubjectId] = useState<number | null>(
+  const [selectedSubjectName, setSelectedSubjectName] = useState<string | null>(
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,14 +32,14 @@ const WriteQuestion: FC = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleSubjectSelect = (subjectId: number) => {
-    setSelectedSubjectId(subjectId); // 선택된 과목 ID 저장
+  const handleSubjectSelect = (subjectName: string) => {
+    setSelectedSubjectName(subjectName); // 선택된 과목 이름 저장
     closeModal();
   };
 
   const handleSubmit = async () => {
     const questionData = {
-      subject_id: selectedSubjectId,
+      //subject_id: selectedSubjectId,
       author_id: 1,
       question_text: questionText,
       question_type: questionType,
@@ -64,7 +64,7 @@ const WriteQuestion: FC = () => {
       </S.TitleDiv>
       <S.WriteContainer>
         <S.Button onClick={openModal}>과목 선택</S.Button>
-        {selectedSubjectId && <p>선택된 과목 ID: {selectedSubjectId}</p>}
+        {selectedSubjectName && <p>선택된 과목: {selectedSubjectName}</p>}
         <S.InputWrapper>
           <S.Label>문제 작성</S.Label>
           <S.TextArea

@@ -4,8 +4,7 @@ export const TitleDiv = styled.div`
   display: flex;
   align-items: baseline;
   color: #4c4c4c;
-  left: 50%;
-  transform: translateX(50%);
+  margin-top: 120px;
 `;
 
 export const H1 = styled.h1`
@@ -13,39 +12,38 @@ export const H1 = styled.h1`
 `;
 
 export const SubjectContainer = styled.div`
-  margin-top: 140px;
   width: 70vw;
+  margin: 0 auto;
+  position: relative;
 `;
 
 export const ProblemContainer = styled.div`
-  display: absolute;
   background: linear-gradient(
     135deg,
     rgba(214, 235, 255, 0.2) 0%,
     rgba(194, 199, 255, 0.2) 100%
   );
+  width: 100%;
   height: auto;
   border: 0.1px solid lightgray;
   border-radius: 30px;
   padding: 15px;
-  left: 50%;
-  transform: translateX(50%);
+  margin-top: 10px;
+  margin-bottom: 150px;
+  position: relative; /* 우측에 FilterContainer를 정렬하기 위해 상대 위치 설정 */
 `;
 
 export const ProblemBankSection = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
-  align-items: baseline;
+  align-items: flex-start; /* 좌측 정렬 */
+  padding-left: 10px; /* 좌측 padding 유지 */
 `;
 
 export const DivProblemList = styled.div`
-  /* 문제 리스트를 문제은행 글씨 아래에 배치 */
   margin-top: 10px;
-  /* 문제 텍스트 크기 조정 */
   font-size: 16px;
-  padding-left: 10px;
+  padding-left: 10px; /* 좌측 padding 유지 */
 `;
 
 export const ParagraphProblemItem = styled.p`
@@ -53,10 +51,10 @@ export const ParagraphProblemItem = styled.p`
 `;
 
 export const WriteQuestionBtn = styled.button`
-  position: fixed; /* 화면에 고정 */
-  bottom: 50px; /* 화면 하단에서 30px 위 */
-  left: 50%; /* 화면의 수평 중앙 */
-  transform: translateX(-50%); /* 중앙 정렬을 위한 변환 */
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 15px 22px;
   font-size: 16px;
   font-weight: bold;
@@ -80,28 +78,10 @@ export const SubjectHeader = styled.div`
 `;
 
 export const FilterContainer = styled.div`
-  position: relative;
-  left: 100%;
-  transform: translateX(-100%);
+  position: absolute;
+  right: 40px; /* ProblemContainer의 우측 끝에 정렬 */
+  top: 50px; /* 위쪽에 적절한 여백 설정 */
   display: flex;
-  width: 55%;
   align-items: center;
-  justify-content: space-between;
+  white-space: nowrap; /* 텍스트가 줄 바꿈 없이 한 줄로 출력되도록 설정 */
 `;
-
-/*
-.arrow-link {
-  text-decoration: none;
-  font-size: 24px;
-  color: #000;
-}
-
-.section-link:hover {
-  color: #007bff;
-}
-
-.arrow {
-  margin-left: 10px;
-  font-size: 24px;
-}
-*/

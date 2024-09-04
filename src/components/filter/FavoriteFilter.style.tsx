@@ -5,6 +5,7 @@ export const InputWrapper = styled.div`
   color: black;
   border: none;
   white-space: nowrap;
+  font-size: 15px;
 `;
 
 export const Check = styled.div`
@@ -12,6 +13,7 @@ export const Check = styled.div`
   height: 16px;
   border-radius: 50%;
   margin-right: 5px;
+  margin-left: 10px;
   cursor: pointer;
   /* on/off style은 FavoriteFilter.tsx에서 조건부로 처리 */
 `;

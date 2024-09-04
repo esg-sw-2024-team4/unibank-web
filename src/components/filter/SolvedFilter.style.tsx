@@ -13,6 +13,7 @@ export const FilterComboBox = styled.select`
   border-radius: 20px;
   background-color: white;
   cursor: pointer;
+  margin-left: 10px;
 
   &:hover {
     background-color: #f0f0f0;

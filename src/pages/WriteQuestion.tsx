@@ -6,6 +6,8 @@ import { authState } from '../store/authAtom';
 import DocumentIcon from '../assets/DocumentIcon.svg';
 import IconX from '../assets/dismiss.svg';
 import SelectSubjectModal from '../components/write/SelectSubjectModal';
+import { postProblem } from '../services/api';
+import { IProblem } from '../interfaces';
 
 const WriteQuestion: FC = () => {
   const navigate = useNavigate();
@@ -82,7 +84,7 @@ const WriteQuestion: FC = () => {
       },
     ];
 
-    const questionData = {
+    const questionData: Omit<IProblem, 'id'> = {
       subject_id: selectedSubjectId,
       title: questionText,
       description: explanation,
@@ -105,18 +107,20 @@ const WriteQuestion: FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/questions`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`, // Recoil 상태에서 가져온 토큰 사용
-          // 'Content-Type': 'multipart/form-data', // 이 헤더는 fetch가 자동으로 설정하므로 주석 처리
-        },
-        body: formData,
-      });
+      // const response = await fetch(`/api/questions`, {
+      //   method: 'POST',
+      //   headers: {
+      //     Authorization: `Bearer ${auth.accessToken}`, // Recoil 상태에서 가져온 토큰 사용
+      //     // 'Content-Type': 'multipart/form-data', // 이 헤더는 fetch가 자동으로 설정하므로 주석 처리
+      //   },
+      //   body: formData,
+      // });
 
-      if (!response.ok) {
-        throw new Error('문제 등록에 실패했습니다.');
-      }
+      // if (!response.ok) {
+      //   throw new Error('문제 등록에 실패했습니다.');
+      // }
+      await postProblem(auth.accessToken, questionData);
+
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);

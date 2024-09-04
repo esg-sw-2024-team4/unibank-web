@@ -118,12 +118,13 @@ export const postProblem = async (
 
 export const putProblem = async (token: string, problem: IProblem) => {
   try {
-    const { id, subject_id, question_text, image_url, source } = problem;
+    const { id, subject_id, title, description, image_url, source } = problem;
     const res = await instance.put<IProblem>(
       `/api/questions/${id}`,
       {
         subject_id,
-        question_text,
+        title,
+        description,
         image_url,
         source,
       },

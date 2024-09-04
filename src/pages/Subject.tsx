@@ -10,6 +10,7 @@ import SolvedFilter from '../components/filter/SolvedFilter';
 import FavoriteFilter from '../components/filter/FavoriteFilter';
 import { useRecoilState } from 'recoil';
 import { authState } from '../store/authAtom';
+import IconX from '../assets/dismiss.svg';
 
 const Subject: FC = () => {
   const navigate = useNavigate();

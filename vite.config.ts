@@ -172,15 +172,13 @@ export default ({ mode }: { mode: string }) => {
         config() {
           return {
             server: {
+              port: 5173,
               proxy: {
-                '/api':
-                  mode === 'production'
-                    ? {
-                        target: process.env.VITE_URL_API_SERVER,
-                        changeOrigin: true,
-                        rewrite: (path) => path.replace(/^\/api/, ''),
-                      }
-                    : {},
+                '/api': {
+                  target: process.env.VITE_URL_API_SERVER,
+                  changeOrigin: true,
+                  rewrite: (path) => path.replace(/^\/api/, ''),
+                },
               },
             },
             preview: {
@@ -193,11 +191,6 @@ export default ({ mode }: { mode: string }) => {
               },
             },
           };
-        },
-        configureServer(serverDev: ViteDevServer) {
-          if (mode !== 'production' && !!app) {
-            serverDev.middlewares.use(app);
-          }
         },
       },
     ],

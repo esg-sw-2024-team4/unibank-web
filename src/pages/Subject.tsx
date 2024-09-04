@@ -49,17 +49,19 @@ const Subject: FC = () => {
   useEffect(() => {
     const userId = token.id;
     if (!userId) return;
-    let filtered = problems;
+    //let filtered = problems;
+    /*
     if (selectedOption === 'myProblems') {
       filtered = problems.filter(
         (problem) => problem.author_id === Number(userId)
       );
     } else if (selectedOption === 'otherMembersProblems') {
       filtered = problems.filter(
-        (problem) => problem.author_id !== Number(userId)
+        //(problem) => problem.author_id !== Number(userId)
       );
     }
-    setFilteredProblems(filtered);
+      */
+    //setFilteredProblems(filtered);
   }, [selectedOption, problems]);
   console.log(problems);
   return (

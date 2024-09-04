@@ -14,11 +14,14 @@ export default ({ mode }: { mode: string }) => {
           return {
             server: {
               proxy: {
-                '/api': {
-                  target: process.env.VITE_URL_API_SERVER,
-                  changeOrigin: true,
-                  rewrite: (path) => path.replace(/^\/api/, ''),
-                },
+                '/api':
+                  mode === 'production'
+                    ? {
+                        target: process.env.VITE_URL_API_SERVER,
+                        changeOrigin: true,
+                        rewrite: (path) => path.replace(/^\/api/, ''),
+                      }
+                    : {},
               },
             },
             preview: {
@@ -31,6 +34,11 @@ export default ({ mode }: { mode: string }) => {
               },
             },
           };
+        },
+        configureServer(serverDev: ViteDevServer) {
+          if (mode !== 'production' && !!app) {
+            serverDev.middlewares.use(app);
+          }
         },
       },
     ],

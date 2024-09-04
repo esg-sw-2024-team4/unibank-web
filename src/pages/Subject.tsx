@@ -3,7 +3,7 @@ import * as S from './Subject.styles';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
-import { getProblemsBySubjectId, getSubjectById } from '../services/api';
+import { getProblemsAll, getSubjectById } from '../services/api';
 import { IProblem, ISubject } from '../interfaces';
 import AuthorFilter from '../components/filter/AuthorFilter';
 import SolvedFilter from '../components/filter/SolvedFilter';
@@ -30,13 +30,16 @@ const Subject: FC = () => {
         if (!id || isNaN(+id)) {
           throw new Error('Invalid request...');
         }
-        const { data } = await getSubjectById(+id);
-        if (data) {
-          setSubject(data);
-          const problemsData = await getProblemsBySubjectId(+id);
-          if (problemsData) {
-            setProblems(problemsData);
-            setFilteredProblems(problemsData);
+        const responseSubject = await getSubjectById(+id);
+        if (responseSubject) {
+          setSubject(responseSubject.data);
+          const responseProblems = await getProblemsAll();
+          if (responseProblems) {
+            setProblems(responseProblems.data);
+          }
+          const responseProblemsBySubject = await getProblemsAll(+id);
+          if (responseProblemsBySubject) {
+            setFilteredProblems(responseProblemsBySubject.data);
           }
         }
       } catch (err) {

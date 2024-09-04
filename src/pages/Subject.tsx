@@ -19,11 +19,9 @@ const Subject: FC = () => {
   const [problems, setProblems] = useState<IProblem[]>([]);
   const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
-
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
-
   useEffect(() => {
     (async () => {
       try {
@@ -43,32 +41,28 @@ const Subject: FC = () => {
           }
         }
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error(err);
         navigate(PATHS.notFound);
       }
     })();
   }, [id]);
-
   useEffect(() => {
     const userId = token.id;
     if (!userId) return;
+    //let filtered = problems;
     /*
-    let filtered = problems;
     if (selectedOption === 'myProblems') {
-      filtered = problems
-        .filter
+      filtered = problems.filter(
         (problem) => problem.author_id === Number(userId)
-        ();
+      );
     } else if (selectedOption === 'otherMembersProblems') {
-      filtered = problems
-        .filter
-        (problem) => problem.author_id !== Number(userId)
-        ();
+      filtered = problems.filter(
+        //(problem) => problem.author_id !== Number(userId)
+      );
     }
-        */
-    setFilteredProblems(problems);
+      */
+    //setFilteredProblems(filtered);
   }, [selectedOption, problems]);
-  console.log(problems);
   return (
     <S.SubjectContainer>
       <S.TitleDiv>
@@ -94,7 +88,7 @@ const Subject: FC = () => {
             )}
           </S.SubjectHeader>
           <S.DivProblemList>
-            {problems.map((problem) => (
+            {filteredProblems.map((problem) => (
               <S.ParagraphProblemItem key={problem.id}>
                 <p>
                   <strong>문제 {problem.id}.</strong> {problem.title}

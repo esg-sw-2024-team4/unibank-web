@@ -18,6 +18,7 @@ export const DivBggra = styled.div`
   opacity: 0.2;
   background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   filter: blur(50px);
+  z-index: 1;
 `;
 
 export const ImgBigLogo = styled.img`
@@ -59,6 +60,7 @@ export const DivSearchBar = styled.div`
   /* max-width: 400px; */
   width: 60%;
   box-shadow: 0px 5px 30px #e1e4ff;
+  z-index: 10;
 `;
 
 export const InputSearch = styled.input`

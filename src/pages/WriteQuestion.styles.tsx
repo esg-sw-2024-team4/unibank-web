@@ -33,6 +33,7 @@ export const WriteContainer = styled.div`
   padding: 40px 30px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 `;
 
 export const InputWrapper = styled.div`
@@ -90,7 +91,10 @@ export const ExitButton = styled.img`
 `;
 
 export const PostButton = styled.button`
-  margin-left: 85%;
+  position: relative;
+  left: 100%;
+  transform: translateX(-110%); /* 중앙 정렬을 위한 변환 */
+  margin-right: 0px;
   margin-top: 20px;
   padding: 15px 22px;
   font-size: 16px;
@@ -100,6 +104,7 @@ export const PostButton = styled.button`
   background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   cursor: pointer;
   border-radius: 20px;
+  margin-bottom: 70px;
 
   &:hover {
     background-color: #f0f0f0;
@@ -126,4 +131,9 @@ export const QuestionType = styled.p`
   font-size: 16px;
   color: #333;
   margin-bottom: 15px;
+`;
+
+export const Text = styled.div`
+  font-size: 13px;
+  color: #7e7b7b;
 `;

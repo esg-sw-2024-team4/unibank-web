@@ -1,5 +1,4 @@
 import * as S from './Subject.styles';
-
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../routes/Routes';
@@ -11,6 +10,7 @@ import FavoriteFilter from '../components/filter/FavoriteFilter';
 import { useRecoilState } from 'recoil';
 import { authState } from '../store/authAtom';
 import IconX from '../assets/dismiss.svg';
+import Loading from '../components/loading/Loading';
 
 const Subject: FC = () => {
   const navigate = useNavigate();
@@ -20,11 +20,10 @@ const Subject: FC = () => {
   const [problems, setProblems] = useState<IProblem[]>([]);
   const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
-  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
         if (!id || isNaN(+id)) {
           throw new Error('Invalid request...');
@@ -44,13 +43,18 @@ const Subject: FC = () => {
       } catch (err) {
         console.error(err);
         navigate(PATHS.notFound);
+      } finally {
+        setLoading(false); // 데이터 로딩 후 로딩 상태 종료
       }
-    })();
-  }, [id]);
+    };
+
+    fetchData();
+  }, [id, navigate]);
+
   useEffect(() => {
     const userId = token.id;
     if (!userId) return;
-    //let filtered = problems;
+    // let filtered = problems;
     /*
     if (selectedOption === 'myProblems') {
       filtered = problems.filter(
@@ -61,55 +65,66 @@ const Subject: FC = () => {
         //(problem) => problem.author_id !== Number(userId)
       );
     }
-      */
-    //setFilteredProblems(filtered);
-  }, [selectedOption, problems]);
+    */
+    // setFilteredProblems(filtered);
+  }, [selectedOption, problems, token.id]);
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+
   return (
-    <S.SubjectContainer>
-      <S.TitleDiv>
-        <S.H1>{subject?.name}</S.H1>
-        <p>{subject?.description}</p>
-      </S.TitleDiv>
-      <S.ProblemContainer>
-        <S.ProblemBankSection>
-          <S.SubjectHeader>
-            <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
-            {token.isAuthenticated && (
-              <S.FilterContainer>
-                <AuthorFilter
-                  selectedOption={selectedOption}
-                  onOptionChange={handleOptionChange}
-                />
-                <SolvedFilter
-                  selectedOption={selectedOption}
-                  onOptionChange={handleOptionChange}
-                />
-                <FavoriteFilter />
-              </S.FilterContainer>
-            )}
-          </S.SubjectHeader>
-          <S.DivProblemList>
-            {filteredProblems.map((problem) => (
-              <S.ParagraphProblemItem key={problem.id}>
-                <p>
-                  <strong>문제 {problem.id}.</strong> {problem.title}
-                </p>
-              </S.ParagraphProblemItem>
-            ))}
-          </S.DivProblemList>
-        </S.ProblemBankSection>
-      </S.ProblemContainer>
-      {token.isAuthenticated && (
-        <S.WriteQuestionBtn
-          type="button"
-          onClick={() => {
-            navigate(`/write`);
-          }}
-        >
-          문제 등록
-        </S.WriteQuestionBtn>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <S.SubjectContainer>
+          <S.TitleDiv>
+            <S.H1>{subject?.name}</S.H1>
+            <p>{subject?.description}</p>
+          </S.TitleDiv>
+          <S.ProblemContainer>
+            <S.ProblemBankSection>
+              <S.SubjectHeader>
+                <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
+                {token.isAuthenticated && (
+                  <S.FilterContainer>
+                    <AuthorFilter
+                      selectedOption={selectedOption}
+                      onOptionChange={handleOptionChange}
+                    />
+                    <SolvedFilter
+                      selectedOption={selectedOption}
+                      onOptionChange={handleOptionChange}
+                    />
+                    <FavoriteFilter />
+                  </S.FilterContainer>
+                )}
+              </S.SubjectHeader>
+              <S.DivProblemList>
+                {filteredProblems.map((problem) => (
+                  <S.ParagraphProblemItem key={problem.id}>
+                    <p>
+                      <strong>문제 {problem.id}.</strong> {problem.title}
+                    </p>
+                  </S.ParagraphProblemItem>
+                ))}
+              </S.DivProblemList>
+            </S.ProblemBankSection>
+          </S.ProblemContainer>
+          {token.isAuthenticated && (
+            <S.WriteQuestionBtn
+              type="button"
+              onClick={() => {
+                navigate(`/write`);
+              }}
+            >
+              문제 등록
+            </S.WriteQuestionBtn>
+          )}
+        </S.SubjectContainer>
       )}
-    </S.SubjectContainer>
+    </>
   );
 };
 

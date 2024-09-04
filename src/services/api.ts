@@ -68,17 +68,18 @@ export const postSubject = async (
 };
 
 export const getSubjectById = async (subjectId: number) => {
-  if (!subjectId) {
-    throw new Error('Invalid subject id...');
+  try {
+    if (!subjectId) {
+      throw new Error('Invalid subject id...');
+    }
+    const res = await instance.get<ISResponse<ISubject>>(
+      `/api/subjects/${subjectId}`
+    );
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch a subject', error);
   }
-  const res = await instance.get<ISResponse<ISubject>>(
-    `/api/subjects/${subjectId}`
-  );
-  if (!res.data) {
-    throw new Error('No subject found...');
-  }
-  const { data } = res;
-  return data;
 };
 
 export const getProblemsAll = async (subjectId?: number) => {
@@ -90,15 +91,6 @@ export const getProblemsAll = async (subjectId?: number) => {
   } catch (error) {
     console.error('문제 리스트 받기 실패', error);
   }
-};
-
-export const getProblemsBySubjectId = async (subjectId: number) => {
-  if (!subjectId) {
-    throw new Error('Invalid subject id...');
-  }
-  const res = await getProblemsAll();
-  const allProblems = res?.data || [];
-  return allProblems.filter((problem) => problem.subject_id === subjectId);
 };
 
 export const postProblem = async (

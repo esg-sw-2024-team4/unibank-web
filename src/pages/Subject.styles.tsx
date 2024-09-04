@@ -4,6 +4,8 @@ export const TitleDiv = styled.div`
   display: flex;
   align-items: baseline;
   color: #4c4c4c;
+  left: 50%;
+  transform: translateX(50%);
 `;
 
 export const H1 = styled.h1`
@@ -16,16 +18,18 @@ export const SubjectContainer = styled.div`
 `;
 
 export const ProblemContainer = styled.div`
-  display: flex;
+  display: absolute;
   background: linear-gradient(
     135deg,
     rgba(214, 235, 255, 0.2) 0%,
     rgba(194, 199, 255, 0.2) 100%
   );
-  height: 300px;
+  height: auto;
   border: 0.1px solid lightgray;
   border-radius: 30px;
   padding: 15px;
+  left: 50%;
+  transform: translateX(50%);
 `;
 
 export const ProblemBankSection = styled.div`
@@ -76,8 +80,9 @@ export const SubjectHeader = styled.div`
 `;
 
 export const FilterContainer = styled.div`
-  padding-left: 0px;
-  padding-right: 25px;
+  position: relative;
+  left: 100%;
+  transform: translateX(-100%);
   display: flex;
   width: 55%;
   align-items: center;

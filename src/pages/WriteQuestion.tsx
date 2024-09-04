@@ -107,6 +107,7 @@ const WriteQuestion: FC = () => {
     }
 
     try {
+<<<<<<< HEAD
       //const response = await fetch(`/api/questions`, {
       //method: 'POST',
       //headers: {
@@ -120,6 +121,22 @@ const WriteQuestion: FC = () => {
       //throw new Error('문제 등록에 실패했습니다.');
       //}
       await postProblem(auth.accessToken, questionData);
+=======
+      // const response = await fetch(`/api/questions`, {
+      //   method: 'POST',
+      //   headers: {
+      //     Authorization: `Bearer ${auth.accessToken}`, // Recoil 상태에서 가져온 토큰 사용
+      //     // 'Content-Type': 'multipart/form-data', // 이 헤더는 fetch가 자동으로 설정하므로 주석 처리
+      //   },
+      //   body: formData,
+      // });
+
+      // if (!response.ok) {
+      //   throw new Error('문제 등록에 실패했습니다.');
+      // }
+      await postProblem(auth.accessToken, questionData);
+
+>>>>>>> 45f207bf3ea479cbbf736b28c83b9dae2e70adeb
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);

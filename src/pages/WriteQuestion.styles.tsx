@@ -83,17 +83,17 @@ export const ImagePreview = styled.img`
 
 export const ExitButton = styled.img`
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
+  top: 163px;
+  right: 16%;
 `;
 
 export const PostButton = styled.button`
   position: relative;
   left: 100%;
-  transform: translateX(-110%); 
+  transform: translateX(-110%);
   margin-right: 0px;
   margin-top: 20px;
   padding: 15px 22px;

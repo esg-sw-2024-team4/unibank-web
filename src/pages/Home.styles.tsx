@@ -82,7 +82,7 @@ export const ButtonSearch = styled.button`
   padding: 7px;
   padding-right: 20px;
   color: #333;
-  z-index: 10;
+  z-index: 8;
 
  &:hover {
     background: #f0f0f0;
@@ -115,6 +115,14 @@ export const DivSubjectItem = styled.div`
   background-color: #f9f9f9;
   border-radius: 30px;
   text-align: left;
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(214, 235, 255, 0.4) 0%,
+      rgba(194, 199, 255, 0.4) 100%
+    );
+  }
 `;
 
 export const DivSubjectItemTitle = styled.h3`
@@ -122,7 +130,10 @@ export const DivSubjectItemTitle = styled.h3`
   font-size: 1.5em;
   color: #4c4c4c;
   text-align: left;
-  flex-wrap: nowrap;
+  white-space: nowrap; /* 줄 바꿈을 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 줄임표 추가 */
+  margin: 0px;
 `;
 
 export const DivSubjectItemDescription = styled(Paragraph)`
@@ -150,6 +161,6 @@ export const SpanDiv = styled.div`
 `;
 
 export const NextButton = styled.img`
-  display: flex;
+  display: relative;
   padding-left: 700px;
 `;

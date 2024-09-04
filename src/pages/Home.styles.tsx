@@ -64,6 +64,7 @@ export const DivSearchBar = styled.div`
 `;
 
 export const InputSearch = styled.input`
+  z-index: 5;
   flex: 1;
   border: none;
   outline: none;

@@ -1,12 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Auth from '../components/auth/Auth';
 import Home from '../pages/Home';
 import Subject from '../pages/Subject';
 import WriteQuestion from '../pages/WriteQuestion';
-import BaseLayout from '../components/layout/Base';
+import BaseLayout from '../components/layout/BaseLayout';
 
 export const PATHS = {
-  auth: '/auth',
   home: '/',
   subjectById: '/subjects',
   write: '/write',
@@ -17,16 +15,15 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path={PATHS.auth} element={<Auth />} />
+        <Route
+          path={PATHS.home}
+          element={
+            <>
+              <Home />
+            </>
+          }
+        />
         <Route element={<BaseLayout />}>
-          <Route
-            path={PATHS.home}
-            element={
-              <>
-                <Home />
-              </>
-            }
-          />
           <Route path={PATHS.subjectById}>
             <Route index element={<div>Subject List</div>} />
             <Route

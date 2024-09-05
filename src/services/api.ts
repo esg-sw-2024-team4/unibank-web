@@ -1,6 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
 import { IMResponse, IProblem, ISResponse, ISubject } from '../interfaces';
 
+const API_URL = import.meta.env.DEV
+  ? '/api'
+  : import.meta.env.VITE_URL_API_SERVER;
+
 const instance: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
@@ -30,21 +34,18 @@ export const authenticate = () => {
     height = 600,
     left = window.screenX + (window.outerWidth - width) / 2,
     top = window.screenY + (window.outerHeight - height) / 2;
-  console.log(import.meta.env.IS_FORCE_PRODUCTION);
   return window.open(
-    import.meta.env.VITE_IS_FORCE_PRODUCTION !== 'true' && import.meta.env.DEV
-      ? '/auth?token=abcd1234'
-      : `${import.meta.env.VITE_URL_API_SERVER}/auth`,
+    `${API_URL}/auth`,
     'Login via Google...',
     `width=${width},height=${height},left=${left},top=${top}`
   );
 };
 
 export const checkToken = (token: string) =>
-  instance.get('/api/auth/check', withBearer(token));
+  instance.get(`${API_URL}/auth/check`, withBearer(token));
 
 export const getSubjectsByKeyword = async (search: string) => {
-  const res = await instance.get<IMResponse<ISubject>>('/api/subjects', {
+  const res = await instance.get<IMResponse<ISubject>>(`${API_URL}/subjects`, {
     params: { search },
   });
   const { data } = res;
@@ -57,7 +58,7 @@ export const postSubject = async (
 ) => {
   try {
     const res = await instance.post(
-      '/api/subjects',
+      `${API_URL}/subjects`,
       subject,
       withBearer(token)
     );
@@ -73,7 +74,7 @@ export const getSubjectById = async (subjectId: number) => {
       throw new Error('Invalid subject id...');
     }
     const res = await instance.get<ISResponse<ISubject>>(
-      `/api/subjects/${subjectId}`
+      `${API_URL}/subjects/${subjectId}`
     );
     const { data } = res;
     return data;
@@ -85,7 +86,9 @@ export const getSubjectById = async (subjectId: number) => {
 export const getProblemsAll = async (subjectId?: number) => {
   try {
     const qs = subjectId ? `?subject_id=${subjectId}` : '';
-    const res = await instance.get<IMResponse<IProblem>>(`/api/questions${qs}`);
+    const res = await instance.get<IMResponse<IProblem>>(
+      `${API_URL}/questions${qs}`
+    );
     const { data } = res;
     return data;
   } catch (error) {
@@ -99,7 +102,7 @@ export const postProblem = async (
 ) => {
   try {
     const res = await instance.post(
-      '/api/questions',
+      `${API_URL}/questions`,
       problem,
       withBearer(token)
     );
@@ -113,7 +116,7 @@ export const putProblem = async (token: string, problem: IProblem) => {
   try {
     const { id, subject_id, title, description, image_url, source } = problem;
     const res = await instance.put<IProblem>(
-      `/api/questions/${id}`,
+      `${API_URL}/questions/${id}`,
       {
         subject_id,
         title,
@@ -132,7 +135,7 @@ export const putProblem = async (token: string, problem: IProblem) => {
 export const deleteProblem = async (token: string, id: number) => {
   try {
     const res = await instance.delete<IProblem>(
-      `/api/questions/${id}`,
+      `${API_URL}/questions/${id}`,
       withBearer(token)
     );
     return res.data;

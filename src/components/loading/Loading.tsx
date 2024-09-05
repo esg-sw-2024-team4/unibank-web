@@ -1,19 +1,15 @@
-// src/components/loading/Loading.tsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as s from './Loading.style';
 import Idea from '../../assets/idea.svg';
 
 const Loading = () => {
   const [visible, setVisible] = useState(true);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
     }, 2000); // 1.5초 후 로딩 종료
-
     return () => clearTimeout(timer);
   }, []);
-
   return visible ? (
     <s.PageWrapper>
       <s.LoadingWrapper>
@@ -26,7 +22,6 @@ const Loading = () => {
               fill="url(#paint0_linear_1043_5343)"
             />
           </g>
-
           <defs>
             <filter
               id="filter0_b_1043_5343"

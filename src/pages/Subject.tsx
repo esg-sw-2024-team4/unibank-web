@@ -9,7 +9,6 @@ import SolvedFilter from '../components/filter/SolvedFilter';
 import FavoriteFilter from '../components/filter/FavoriteFilter';
 import { useRecoilState } from 'recoil';
 import { authState } from '../store/authAtom';
-import IconX from '../assets/dismiss.svg';
 import Loading from '../components/loading/Loading';
 
 const Subject: FC = () => {

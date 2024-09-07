@@ -1,13 +1,11 @@
 import styled, { keyframes } from 'styled-components';
 
-// Define the fadeInOut animation
 const fadeInOut = keyframes`
   0% { opacity: 0.3; }
   50% { opacity: 1; }
   100% { opacity: 0.3; }
 `;
 
-// Define the scale-up animation
 const scaleUp = keyframes`
   0% {
     transform: scale(0.4);
@@ -30,7 +28,7 @@ export const PageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 11;
+  z-index: 10000;
 `;
 
 export const LoadingWrapper = styled.div`

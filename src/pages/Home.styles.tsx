@@ -115,6 +115,7 @@ export const DivSubjectItem = styled.div`
   background-color: #f9f9f9;
   border-radius: 30px;
   text-align: left;
+  cursor: pointer;
 
   &:hover {
     background: linear-gradient(
@@ -136,7 +137,7 @@ export const DivSubjectItemTitle = styled.h3`
   margin: 0px;
 `;
 
-export const DivSubjectItemDescription = styled(Paragraph)`
+export const ParagraphSubjectItemDescription = styled(Paragraph)`
   display: inline-block;
   margin-top: 10px;
   margin-bottom: 5px;

@@ -1,5 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
-import { IMResponse, IProblem, ISResponse, ISubject } from '../interfaces';
+import {
+  IMResponse,
+  IProblem,
+  IRequestBodyProblem,
+  ISResponse,
+  ISubject,
+} from '../interfaces';
 
 const API_URL = import.meta.env.DEV
   ? '/api'
@@ -83,11 +89,12 @@ export const getSubjectById = async (subjectId: number) => {
   }
 };
 
-export const getProblemsAll = async (subjectId?: number) => {
+export const getProblems = async (subjectId: number, token?: string) => {
   try {
     const qs = subjectId ? `?subject_id=${subjectId}` : '';
     const res = await instance.get<IMResponse<IProblem>>(
-      `${API_URL}/questions${qs}`
+      `${API_URL}/questions${qs}`,
+      token ? withBearer(token) : {}
     );
     const { data } = res;
     return data;
@@ -98,10 +105,10 @@ export const getProblemsAll = async (subjectId?: number) => {
 
 export const postProblem = async (
   token: string,
-  problem: Omit<IProblem, 'id'>
+  problem: Omit<IRequestBodyProblem, 'id'>
 ) => {
   try {
-    const res = await instance.post(
+    const res = await instance.post<IProblem>(
       `${API_URL}/questions`,
       problem,
       withBearer(token)
@@ -112,18 +119,15 @@ export const postProblem = async (
   }
 };
 
-export const putProblem = async (token: string, problem: IProblem) => {
+export const putProblem = async (
+  token: string,
+  problem: IRequestBodyProblem
+) => {
   try {
-    const { id, subject_id, title, description, image_url, source } = problem;
+    const { id, ...r } = problem;
     const res = await instance.put<IProblem>(
       `${API_URL}/questions/${id}`,
-      {
-        subject_id,
-        title,
-        description,
-        image_url,
-        source,
-      },
+      r,
       withBearer(token)
     );
     return res.data;
@@ -136,6 +140,36 @@ export const deleteProblem = async (token: string, id: number) => {
   try {
     const res = await instance.delete<IProblem>(
       `${API_URL}/questions/${id}`,
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
+};
+
+export const submitSolution = async (
+  token: string,
+  id: number,
+  answer: number
+) => {
+  try {
+    const res = await instance.post(
+      `${API_URL}/questions/${id}/submit`,
+      { answer },
+      withBearer(token)
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to post a problem:', error);
+  }
+};
+
+export const toggleFavorite = async (token: string, id: number) => {
+  try {
+    const res = await instance.post(
+      `${API_URL}/questions/${id}/favorite`,
+      {},
       withBearer(token)
     );
     return res.data;

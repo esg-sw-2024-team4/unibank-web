@@ -7,15 +7,21 @@ import DocumentIcon from '../assets/DocumentIcon.svg';
 import IconX from '../assets/dismiss.svg';
 import SelectSubjectModal from '../components/write/SelectSubjectModal';
 import { postProblem } from '../services/api'; // Axios 인스턴스를 사용하는 API 함수
-import { IProblem } from '../interfaces';
+import { IRequestBodyProblem } from '../interfaces';
 
 const WriteQuestion: FC = () => {
   const navigate = useNavigate();
   const auth = useRecoilValue(authState);
-
   const [questionText, setQuestionText] = useState('');
   const [questionType] = useState('객관식 문제');
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
+  const [enteredOptions, setEnteredOptions] = useState<string[]>([
+    '',
+    '',
+    '',
+    '',
+    '',
+  ]);
   const [explanation, setExplanation] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [source, setSource] = useState('');
@@ -26,92 +32,76 @@ const WriteQuestion: FC = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setImageUrl(URL.createObjectURL(event.target.files[0]));
     }
   };
-
   const onClickBackButton = () => {
     navigate(-1); // 이전 페이지로 이동
   };
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   const handleSubjectSelect = (subjectName: string, subjectId: number) => {
     setSelectedSubjectName(subjectName);
     setSelectedSubjectId(subjectId);
     closeModal();
   };
-
   const handleSubmit = async () => {
     if (!auth.isAuthenticated || !auth.accessToken) {
       console.error('No token found');
       alert('로그인 후 다시 시도해주세요.');
       return;
     }
-
     if (selectedSubjectId === null || isNaN(selectedSubjectId)) {
       console.error('Invalid Subject ID');
       alert('유효하지 않은 과목 ID입니다.');
       return;
     }
-
-    const options = [
-      {
-        option: 1,
-        option_text: '답안 1 내용',
-        is_correct: correctAnswer === 1,
-      },
-      {
-        option: 2,
-        option_text: '답안 2 내용',
-        is_correct: correctAnswer === 2,
-      },
-      {
-        option: 3,
-        option_text: '답안 3 내용',
-        is_correct: correctAnswer === 3,
-      },
-      {
-        option: 4,
-        option_text: '답안 4 내용',
-        is_correct: correctAnswer === 4,
-      },
-    ];
-
-    const questionData: Omit<IProblem, 'id'> = {
+    if (!correctAnswer || correctAnswer <= 0 || correctAnswer > 5) {
+      alert('정답이 보기에 없습니다.');
+      return;
+    }
+    const questionData: Omit<IRequestBodyProblem, 'id'> = {
       subject_id: selectedSubjectId,
       title: questionText,
       description: explanation,
-      image_url: imageUrl || '', // Optional field, provide default empty string
+      image_url: imageUrl || '',
       source: source,
-      options: options,
+      options: enteredOptions.map((ot, idx) => {
+        return {
+          option: idx + 1,
+          option_text: ot,
+          is_correct: correctAnswer === idx + 1,
+        };
+      }),
     };
-
-    const formData = new FormData();
-    formData.append('questionData', JSON.stringify(questionData));
-
-    // 이미지가 있다면 FormData에 추가
     if (imageUrl) {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
-      formData.append('image', blob, 'image.jpg'); // blob과 파일명을 설정
+      const limitSz = 4096;
+      if (blob.size / 1024 / 1024 > limitSz) {
+        alert(new Error('Image file size should be less than 4MB'));
+      }
+      const b64s = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve((reader.result as string).split(',')[1]);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      questionData.image_url = `data:image/jpeg;base64,${b64s}`;
     }
-
     try {
       // Axios를 사용하여 문제 데이터 전송
       await postProblem(auth.accessToken, questionData);
-      // await putProblem(auth.accessToken, { id: 1, ...questionData });
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);
       alert('문제 등록에 실패했습니다.');
     }
   };
-
   return (
     <S.SubjectContainer>
       {/* 컴포넌트 UI 코드 그대로 유지 */}
@@ -139,6 +129,21 @@ const WriteQuestion: FC = () => {
           <S.Label>문제 유형</S.Label>
           <S.QuestionType>{questionType}</S.QuestionType>
         </S.InputWrapper>
+        {enteredOptions.map((opt, idx) => (
+          <S.InputWrapper key={idx}>
+            <S.Label>{`보기 ${idx + 1}`}</S.Label>
+            <S.Input
+              type="text"
+              placeholder={`보기 ${idx + 1}을 입력하세요.`}
+              value={opt}
+              onChange={(e) => {
+                const newOptions = [...enteredOptions];
+                newOptions[idx] = e.target.value;
+                setEnteredOptions(newOptions);
+              }}
+            />
+          </S.InputWrapper>
+        ))}
         <S.InputWrapper>
           <S.Label>정답</S.Label>
           <S.Input

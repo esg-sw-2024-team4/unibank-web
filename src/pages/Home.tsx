@@ -99,17 +99,18 @@ const Home: FC = () => {
                 </S.DivSearchBar>
                 <S.DivSubjectList>
                   {filteredSubjectList.map((subject) => (
-                    <S.DivSubjectItem key={subject.id}>
+                    <S.DivSubjectItem
+                      key={subject.id}
+                      onClick={() => navigate(`/subjects/${subject.id}`)}
+                    >
                       <S.Div>
                         <S.SpanDiv>
-                          <S.DivSubjectItemTitle
-                            onClick={() => navigate(`/subjects/${subject.id}`)}
-                          >
+                          <S.DivSubjectItemTitle>
                             {subject.name}
                           </S.DivSubjectItemTitle>
-                          <S.DivSubjectItemDescription>
+                          <S.ParagraphSubjectItemDescription>
                             {subject.description}
-                          </S.DivSubjectItemDescription>
+                          </S.ParagraphSubjectItemDescription>
                         </S.SpanDiv>
                         <S.NextButton
                           src={nextVector}

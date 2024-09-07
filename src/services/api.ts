@@ -35,7 +35,7 @@ export const authenticate = () => {
     left = window.screenX + (window.outerWidth - width) / 2,
     top = window.screenY + (window.outerHeight - height) / 2;
   return window.open(
-    `${API_URL}/auth`,
+    `${API_URL}/auth${import.meta.env.DEV ? '?local=true' : ''}`,
     'Login via Google...',
     `width=${width},height=${height},left=${left},top=${top}`
   );

@@ -11,3 +11,51 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+@font-face {
+  font-family: 'pretendard-medium';
+  src: url('./assets/fonts/pretendard-medium.eot');
+  src:
+    url('./assets/fonts/pretendard-medium.eot?#iefix')
+      format('embedded-opentype'),
+    url('./assets/fonts/pretendard-medium.woff2') format('woff2'),
+    url('./assets/fonts/pretendard-medium.woff') format('woff'),
+    url('./assets/fonts/pretendard-medium.ttf') format('truetype');
+  font-display: block;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  word-break: keep-all;
+  letter-spacing: 0;
+  font-family: pretendard-medium;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: 0.45px;
+  -webkit-text-stroke: 0.45px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scroll-none::-webkit-scrollbar {
+  display: none;
+}
+
+*:disabled {
+  cursor: not-allowed !important;
+}
+
+button {
+  cursor: pointer;
+}

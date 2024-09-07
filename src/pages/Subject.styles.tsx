@@ -46,7 +46,7 @@ export const DivProblemList = styled.div`
   padding-left: 10px; /* 좌측 padding 유지 */
 `;
 
-export const ParagraphProblemItem = styled.p`
+export const DivProblemItem = styled.div`
   margin: 30px 0px;
 `;
 

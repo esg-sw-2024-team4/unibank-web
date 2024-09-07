@@ -26,8 +26,8 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
   }, []);
 
   return (
-    <S.ModalOverlay>
-      <S.ModalContent>
+    <S.ModalOverlay onClick={onClose}>
+      <S.ModalContent onClick={(e) => e.stopPropagation()}>
         <S.ModalHeader>
           <S.Title>과목 선택</S.Title>
           <S.CloseButton onClick={onClose}>X</S.CloseButton>

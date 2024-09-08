@@ -106,13 +106,14 @@ export const DivSubjectList = styled.div`
   /* searchbar와 list 사이 적절한 간격 */
   margin-top: 80px;
   /* width: 80%; */
+  margin-bottom: 80px;
 `;
 
 export const DivSubjectItem = styled.div`
   width: 55%;
   margin-bottom: 10px;
   padding: 30px;
-  background-color: #f9f9f9;
+  background-color: #ededed;
   border-radius: 30px;
   text-align: left;
   cursor: pointer;
@@ -120,16 +121,16 @@ export const DivSubjectItem = styled.div`
   &:hover {
     background: linear-gradient(
       135deg,
-      rgba(214, 235, 255, 0.4) 0%,
-      rgba(194, 199, 255, 0.4) 100%
+      rgba(214, 235, 255, 0.25) 0%,
+      rgba(194, 199, 255, 0.25) 100%
     );
   }
 `;
 
 export const DivSubjectItemTitle = styled.h3`
   display: inline-block;
-  font-size: 1.5em;
-  color: #4c4c4c;
+  font-size: 1.4em;
+  color: #666666;
   text-align: left;
   white-space: nowrap; /* 줄 바꿈을 방지 */
   overflow: hidden; /* 넘치는 텍스트 숨기기 */
@@ -139,29 +140,34 @@ export const DivSubjectItemTitle = styled.h3`
 
 export const ParagraphSubjectItemDescription = styled(Paragraph)`
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 8px;
   margin-bottom: 5px;
   margin-left: 3px;
   text-align: left;
   font-size: 1em;
-  color: #4c4c4c;
+  color: #666666;
   flex-wrap: nowrap;
 `;
 
 export const Div = styled.div`
   display: flex;
-  align-items: center;
+  align-items: center; /* 수직 중앙 정렬 */
   flex-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: relative; /* NextButton의 절대 위치를 기준으로 함 */
 `;
 
 export const SpanDiv = styled.div`
-  display: inline;
+  display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
+  text-align: left;
 `;
 
 export const NextButton = styled.img`
-  display: relative;
-  padding-left: 700px;
+  position: absolute;
+  right: 5px;
+  top: 50%; /* 수직 중앙 */
+  transform: translateY(-50%); /* 정확히 수직 중앙으로 이동 */
 `;

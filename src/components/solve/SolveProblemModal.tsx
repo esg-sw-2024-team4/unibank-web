@@ -4,6 +4,8 @@ import { IProblem } from '../../interfaces';
 import { submitSolution, toggleFavorite } from '../../services/api';
 import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
+import ColorStar from '../../assets/ColorStar.svg';
+import WhiteStar from '../../assets/WhiteStar.svg';
 
 interface IPropsSolveProblemModal {
   problem: IProblem | null;
@@ -79,51 +81,130 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                   type="button"
                   disabled={isProcessing}
                   style={{
-                    border: '1px solid gray',
+                    border: '0.2px solid #B7B0FF',
                     marginLeft: 'auto',
                     marginRight: '0px',
+                    marginBottom: '10px',
+                    borderRadius: '10px',
+                    padding: '3px 10px',
+                    alignContent: 'center',
+                    textAlign: 'center',
+                    fontSize: '13px',
+                    fontWeight: 'normal',
+                    backgroundColor: problem.isFavorite ? '#ffffff' : '#B7B0FF',
+                    color: problem.isFavorite ? '#B7B0FF' : '#ffffff',
                   }}
                   onClick={() => handleToggleFavorite()}
                 >
-                  {problem.isFavorite ? '즐겨찾기 삭제' : '즐겨찾기 추가'}
+                  {problem.isFavorite ? (
+                    <>
+                      문제 스크랩{' '}
+                      <img
+                        src={ColorStar}
+                        alt="ColorStar"
+                        style={{
+                          marginLeft: '2px',
+                          height: '80%',
+                          width: 'auto',
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      스크랩 취소{' '}
+                      <img
+                        src={WhiteStar}
+                        alt="WhiteStar"
+                        style={{
+                          marginLeft: '2px',
+                          height: '80%',
+                          width: 'auto',
+                        }}
+                      />
+                    </>
+                  )}
                 </button>
               )}
               {problem.imageUrl && (
                 <img src={problem.imageUrl} alt={problem.title} />
               )}
-              <div style={{ marginTop: '14px' }}>{problem.description}</div>
-              <div style={{ marginTop: '14px' }}>
+              <div style={{ marginTop: '14px', alignItems: 'left' }}>
                 {problem.options.map((option, idx) => (
                   <button
                     key={idx}
                     type="button"
                     style={{
-                      display: 'block',
+                      backgroundColor: 'white',
+                      padding: '3px 9px',
+                      //borderRadius: '10px',
+                      display: 'flex',
+                      alignItems: 'center',
                       margin: '5px auto',
-                      border: `1px solid${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? ' red' : ' #e6e6e6'}`,
+                      border: 'none',
+                      //border: `0.5px solid${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
                     }}
                     disabled={isProcessing}
                     onClick={() => {
                       handleSubmitSolution(idx + 1);
                     }}
-                  >{`${idx + 1}번. ${option.optionText}`}</button>
+                  >
+                    {' '}
+                    <div
+                      style={{
+                        width: '20px', // 원의 너비
+                        height: '20px', // 원의 높이
+                        borderRadius: '50%', // 원 모양
+                        backgroundColor: `${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
+                        marginRight: '5px', // 텍스트와의 간격
+                        display: 'flex', // 중앙 정렬을 위한 flexbox
+                        justifyContent: 'center', // 가로 중앙 정렬
+                        alignItems: 'center', // 세로 중앙 정렬
+                        color: `${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#ffffff' : ' #B7B0FF'}`,
+                        fontWeight: 'bold', // 텍스트 두께
+                        fontSize: '12px', // 텍스트 크기
+                      }}
+                    >
+                      {idx + 1}
+                    </div>
+                    {`${option.optionText}`}
+                  </button>
                 ))}
               </div>
               {!token.isAuthenticated && selectedAnswerForGuest ? (
-                <div style={{ margin: '14px auto' }}>
-                  {selectedAnswerForGuest === correctAnswer
-                    ? '정답입니다!'
-                    : '오답입니다...'}
+                <div style={{ margin: '14px auto', alignContent: 'center' }}>
+                  {selectedAnswerForGuest === correctAnswer ? (
+                    <>
+                      정답입니다!
+                      <br />
+                      {problem.description}
+                    </>
+                  ) : (
+                    '오답입니다. 다시 한번 풀어보세요!'
+                  )}
                 </div>
               ) : (
                 <>
                   {!isProcessing &&
                   correctAnswer &&
                   !!problem.answerSubmittedPreviously ? (
-                    <div style={{ margin: '14px auto' }}>
-                      {problem.answerSubmittedPreviously === correctAnswer
-                        ? '정답입니다!'
-                        : '오답입니다...'}
+                    <div
+                      style={{
+                        margin: '40px auto',
+                        alignContent: 'center',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {problem.answerSubmittedPreviously === correctAnswer ? (
+                        <>
+                          <span style={{ color: '#AD99FF' }}>정답입니다!</span>{' '}
+                          <br />
+                          <p style={{ fontSize: '15px' }}>
+                            {problem.description}
+                          </p>{' '}
+                        </>
+                      ) : (
+                        '오답입니다. 다시 한번 풀어보세요!'
+                      )}
                     </div>
                   ) : (
                     <></>

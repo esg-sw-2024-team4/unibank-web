@@ -59,13 +59,15 @@ export const WriteQuestionBtn = styled.button`
   font-size: 16px;
   font-weight: bold;
   color: white;
-  border: 1px solid #ccc;
+  border: none;
   background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   cursor: pointer;
   border-radius: 30px;
 
   &:hover {
-    background-color: #f0f0f0;
+    background: #ffffff;
+    border: 2px solid #c2c7ff;
+    color: #c2c7ff;
   }
 `;
 

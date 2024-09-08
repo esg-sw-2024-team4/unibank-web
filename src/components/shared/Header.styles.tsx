@@ -7,7 +7,7 @@ export const Header = styled.header`
   width: 100%;
   height: 80px;
   background-color: #ffffff;
-  box-shadow: 0 4px 4px -2px rgba(32, 44, 153, 0.2);
+  box-shadow: 0 20px 20px -10px rgba(32, 44, 153, 0.02);
   z-index: 10;
 `;
 

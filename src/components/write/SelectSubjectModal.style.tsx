@@ -14,8 +14,8 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 30px;
+  border-radius: 20px;
   width: 400px;
   max-height: 80vh;
   overflow-y: auto;
@@ -54,25 +54,35 @@ export const SubjectItem = styled.li`
   background-color: #f4f4f4;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s ease; /* 부드러운 전환 효과 추가 */
+
   &:hover {
-    background-color: #e0e0e0;
+    background: linear-gradient(
+      135deg,
+      rgba(214, 235, 255, 0.25) 0%,
+      rgba(194, 199, 255, 0.25) 100%
+    );
   }
 `;
 
 export const AddSubjectInput = styled.input`
-  width: 100%;
+  width: 80%;
+  height: 40px; /* 고정된 높이 */
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 10px;
 `;
 
 export const AddSubjectButton = styled.button`
-  width: 100%;
-  padding: 10px;
-  margin: 16px auto;
+  width: 37px;
+  height: 34px; /* 고정된 높이 */
+  padding-bottom: 3px;
   border: none;
-  background-color: #333;
-  color: white;
-  border-radius: 4px;
+  background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   cursor: pointer;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  text-align: center;
 `;

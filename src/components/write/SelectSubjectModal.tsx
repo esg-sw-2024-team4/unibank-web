@@ -4,6 +4,7 @@ import { getSubjectsByKeyword, postSubject } from '../../services/api';
 import { ISubject } from '../../interfaces';
 import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
+import Xicon from '../../assets/dismiss.svg';
 
 interface SelectSubjectModalProps {
   onSelect: (selectedSubjectName: string, selectedSubjectId: number) => void;
@@ -54,26 +55,10 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
       <S.ModalContent onClick={(e) => e.stopPropagation()}>
         <S.ModalHeader>
           <S.Title>과목 선택</S.Title>
-          <S.CloseButton onClick={onClose}>X</S.CloseButton>
+          <S.CloseButton onClick={onClose}>
+            <img src={Xicon} alt="닫기" />
+          </S.CloseButton>
         </S.ModalHeader>
-        <S.AddSubjectInput
-          type="text"
-          disabled={isProcessing}
-          value={enteredSubjectName}
-          onChange={(e) => {
-            setEnteredSubjectName(e.target.value);
-          }}
-        />
-        <S.AddSubjectButton
-          type="button"
-          disabled={isProcessing}
-          onClick={() => {
-            handleClickAddSubject();
-            setEnteredSubjectName('');
-          }}
-        >
-          과목 추가
-        </S.AddSubjectButton>
         <S.SubjectList>
           {filteredSubjectList.map((subject) => (
             <S.SubjectItem
@@ -87,6 +72,37 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
             </S.SubjectItem>
           ))}
         </S.SubjectList>
+        <p style={{ marginTop: '30px', marginBottom: '5px', color: 'gray' }}>
+          찾는 과목이 없다면, 과목을 직접 추가해 보세요.
+        </p>
+        <div
+          style={{
+            display: 'flex',
+            width: '95%',
+            alignItems: 'center',
+            gap: '5px',
+          }}
+        >
+          <S.AddSubjectInput
+            type="text"
+            disabled={isProcessing}
+            value={enteredSubjectName}
+            placeholder="추가할 과목명을 입력해 주세요."
+            onChange={(e) => {
+              setEnteredSubjectName(e.target.value);
+            }}
+          />
+          <S.AddSubjectButton
+            type="button"
+            disabled={isProcessing}
+            onClick={() => {
+              handleClickAddSubject();
+              setEnteredSubjectName('');
+            }}
+          >
+            +
+          </S.AddSubjectButton>
+        </div>
       </S.ModalContent>
     </S.ModalOverlay>
   );

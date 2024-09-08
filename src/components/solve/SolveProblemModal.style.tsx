@@ -14,34 +14,44 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
+  position: relative;
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
-  width: 400px;
+  width: 500px;
   max-height: 80vh;
   overflow-y: auto;
   z-index: 1000;
 `;
 
 export const ModalHeader = styled.div`
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  {/*border-bottom: 0.5px solid #ddd;*/}
+  padding-bottom: 20px;
+`;
+
+export const Source = styled.h3`
+  font-weight: lighter;
+  font-size: 13px;
+  color: gray;
+  text-align: left;
 `;
 
 export const Title = styled.h2`
   margin: 0;
-  font-size: 18px;
+  font-size: 19px;
+  font-weight: normal;
 `;
 
 export const CloseButton = styled.button`
+  position: absolute;
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
+  top: 25px;
+  right: 20px;
 `;
 
 export const SubjectList = styled.ul`

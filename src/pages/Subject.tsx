@@ -155,7 +155,9 @@ const Subject: FC = () => {
                         setIsModalOpened(true);
                       }}
                     >
-                      <strong>문제 {idx + 1}.</strong>
+                      <strong style={{ minWidth: 'max-content' }}>
+                        문제 {idx + 1}.
+                      </strong>
                       <div style={{ marginLeft: '10px' }}>{problem.title}</div>
                     </div>
                     {problem.isOwned && (

@@ -84,21 +84,21 @@ const Subject: FC = () => {
   };
   useEffect(() => {
     const newFilteredProblems = fetchedProblems.filter((p) => {
-      return (
-        (selectedOption === 'myProblems'
-          ? p.isOwned
-          : selectedOption === 'otherMembersProblems'
-            ? !p.isOwned
-            : selectedOption === 'completed'
-              ? p.answerSubmittedPreviously
-              : selectedOption === 'notCompleted'
-                ? !p.answerSubmittedPreviously
-                : true) && (showAvailable ? p.isFavorite : true)
-      );
+      return !token.accessToken
+        ? true
+        : (selectedOption === 'myProblems'
+            ? p.isOwned
+            : selectedOption === 'otherMembersProblems'
+              ? !p.isOwned
+              : selectedOption === 'completed'
+                ? p.answerSubmittedPreviously
+                : selectedOption === 'notCompleted'
+                  ? !p.answerSubmittedPreviously
+                  : true) && (showAvailable ? p.isFavorite : true);
     });
     setFilteredProblems(newFilteredProblems);
     handleOrphanCurrentSolvingProblem();
-  }, [id, selectedOption, fetchedProblems, showAvailable]);
+  }, [token, id, selectedOption, fetchedProblems, showAvailable]);
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };

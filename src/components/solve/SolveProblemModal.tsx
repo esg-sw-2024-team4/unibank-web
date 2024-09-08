@@ -98,7 +98,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                 >
                   {problem.isFavorite ? (
                     <>
-                      문제 스크랩{' '}
+                      {'스크랩 취소 '}
                       <img
                         src={ColorStar}
                         alt="ColorStar"
@@ -111,7 +111,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                     </>
                   ) : (
                     <>
-                      스크랩 취소{' '}
+                      {'문제 스크랩 '}
                       <img
                         src={WhiteStar}
                         alt="WhiteStar"

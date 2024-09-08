@@ -58,3 +58,21 @@ export const SubjectItem = styled.li`
     background-color: #e0e0e0;
   }
 `;
+
+export const AddSubjectInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+
+export const AddSubjectButton = styled.button`
+  width: 100%;
+  padding: 10px;
+  margin: 16px auto;
+  border: none;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+`;

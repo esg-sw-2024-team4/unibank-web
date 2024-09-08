@@ -13,12 +13,16 @@ export const Header = styled.header`
 
 export const DivContents = styled.div`
   display: flex;
-  width: 90%;
-  max-width: 1100px;
+  width: 100%;
   height: 100%;
-  margin: 0 auto;
   align-items: center;
   justify-content: space-between;
+  padding: 0 10px;
+
+  @media screen and (min-width: 768px) {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 `;
 
 export const DivLogoZone = styled.div`

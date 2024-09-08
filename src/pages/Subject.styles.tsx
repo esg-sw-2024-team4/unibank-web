@@ -80,10 +80,16 @@ export const SubjectHeader = styled.div`
 `;
 
 export const FilterContainer = styled.div`
-  position: absolute;
-  right: 40px; /* ProblemContainer의 우측 끝에 정렬 */
-  top: 50px; /* 위쪽에 적절한 여백 설정 */
+  margin-top: 10px;
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 10px;
   align-items: center;
   white-space: nowrap; /* 텍스트가 줄 바꿈 없이 한 줄로 출력되도록 설정 */
+
+  @media screen and (min-width: 768px) {
+    flex-wrap: nowrap;
+    margin-left: auto;
+    margin-right: 10px;
+  }
 `;

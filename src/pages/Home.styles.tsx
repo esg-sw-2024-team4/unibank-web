@@ -129,7 +129,7 @@ export const DivSubjectItem = styled.div`
 export const DivSubjectItemTitle = styled.h3`
   display: inline-block;
   font-size: 1.5em;
-  color: #4c4c4c;
+  color: #666666;
   text-align: left;
   white-space: nowrap; /* 줄 바꿈을 방지 */
   overflow: hidden; /* 넘치는 텍스트 숨기기 */
@@ -144,7 +144,7 @@ export const ParagraphSubjectItemDescription = styled(Paragraph)`
   margin-left: 3px;
   text-align: left;
   font-size: 1em;
-  color: #4c4c4c;
+  color: #666666;
   flex-wrap: nowrap;
 `;
 

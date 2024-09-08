@@ -4,6 +4,8 @@ import { IProblem } from '../../interfaces';
 import { submitSolution, toggleFavorite } from '../../services/api';
 import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
+import ColorStar from '../../assets/ColorStar.svg';
+import WhiteStar from '../../assets/WhiteStar.svg';
 
 interface IPropsSolveProblemModal {
   problem: IProblem | null;
@@ -70,13 +72,48 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                 type="button"
                 disabled={isProcessing}
                 style={{
-                  border: '1px solid gray',
+                  border: '0.2px solid #B7B0FF',
                   marginLeft: 'auto',
                   marginRight: '0px',
+                  marginBottom: '10px',
+                  borderRadius: '10px',
+                  padding: '3px 10px',
+                  alignContent: 'center',
+                  textAlign: 'center',
+                  color: '#B7B0FF',
+                  fontSize: '13px',
+                  fontWeight: 'normal',
+                  backgroundColor: '#ffffff',
                 }}
                 onClick={() => handleToggleFavorite()}
               >
-                {problem.isFavorite ? '즐겨찾기 삭제' : '즐겨찾기 추가'}
+                {problem.isFavorite ? (
+                  <>
+                    즐겨찾기 삭제{' '}
+                    <img
+                      src={ColorStar}
+                      alt="ColorStar"
+                      style={{
+                        marginLeft: '2px',
+                        height: '80%',
+                        width: 'auto',
+                      }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    즐겨찾기 추가{' '}
+                    <img
+                      src={WhiteStar}
+                      alt="WhiteStar"
+                      style={{
+                        marginLeft: '2px',
+                        height: '80%',
+                        width: 'auto',
+                      }}
+                    />
+                  </>
+                )}
               </button>
               {problem.imageUrl && (
                 <img src={problem.imageUrl} alt={problem.title} />

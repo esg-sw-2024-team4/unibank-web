@@ -7,7 +7,7 @@ const Loading = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 2000); // 1.5초 후 로딩 종료
+    }, 1300);
     return () => clearTimeout(timer);
   }, []);
   return visible ? (

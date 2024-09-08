@@ -40,7 +40,7 @@ const Header: FC = () => {
             <S.ImgLogo src={logo} alt="로고" />
           </Link>
           <div>
-            <p>대학생을 위한 문제 은행</p>
+            <p style={{ fontSize: '1.05em' }}>대학생을 위한 문제 은행</p>
           </div>
         </S.DivLogoZone>
         <div>

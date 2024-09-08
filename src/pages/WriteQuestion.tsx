@@ -113,8 +113,14 @@ const WriteQuestion: FC = () => {
       <S.WriteContainer>
         <S.Button onClick={openModal}>과목 선택</S.Button>
         {selectedSubjectName && (
-          <p>
-            선택된 과목: {selectedSubjectName}({selectedSubjectId})
+          <p
+            style={{
+              marginBottom: '60px',
+              marginLeft: '10px',
+              color: '#909090',
+            }}
+          >
+            현재 선택된 과목: {selectedSubjectName}({selectedSubjectId})
           </p>
         )}
         <S.InputWrapper>

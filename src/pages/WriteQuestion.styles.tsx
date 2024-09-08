@@ -104,7 +104,6 @@ export const PostButton = styled.button`
   background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   cursor: pointer;
   border-radius: 20px;
-  margin-bottom: 70px;
 
   &:hover {
     background-color: #f0f0f0;
@@ -113,17 +112,16 @@ export const PostButton = styled.button`
 
 export const Button = styled.button`
   padding: 10px 20px;
-  margin-bottom: 40px;
-  background-color: #cbcbcb;
+  background: linear-gradient(135deg, #c2c7ff 0%, #ad99ff 100%);
   color: #fff;
   border: none;
   border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 20%;
 
   &:hover {
-    background-color: #b2b2b2;
+    background: #cecece;
   }
 `;
 

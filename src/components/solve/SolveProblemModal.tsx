@@ -19,6 +19,9 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
   const [token] = useRecoilState(authState);
   const [isProcessing, setIsProcessing] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
+  const [selectedAnswerForGuest, setSelectedAnswerForGuest] = useState<
+    number | null
+  >(null);
   useEffect(() => {
     if (problem) {
       setCorrectAnswer(problem.options.findIndex((o) => o.isCorrect) + 1);
@@ -28,12 +31,17 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
   }, [problem]);
   const handleSubmitSolution = async (selectedAnswer: number) => {
     if (problem?.id) {
-      const { accessToken } = token;
       setIsProcessing(true);
       try {
-        await submitSolution(accessToken, problem.id, selectedAnswer);
-        await fetchProblems();
-        problem.answerSubmittedPreviously = selectedAnswer;
+        const { accessToken } = token;
+        if (accessToken) {
+          setSelectedAnswerForGuest(null);
+          await submitSolution(accessToken, problem.id, selectedAnswer);
+          await fetchProblems();
+          problem.answerSubmittedPreviously = selectedAnswer;
+        } else {
+          setSelectedAnswerForGuest(selectedAnswer);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -66,18 +74,20 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
               <S.CloseButton onClick={onClose}>X</S.CloseButton>
             </S.ModalHeader>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <button
-                type="button"
-                disabled={isProcessing}
-                style={{
-                  border: '1px solid gray',
-                  marginLeft: 'auto',
-                  marginRight: '0px',
-                }}
-                onClick={() => handleToggleFavorite()}
-              >
-                {problem.isFavorite ? '즐겨찾기 삭제' : '즐겨찾기 추가'}
-              </button>
+              {token.isAuthenticated && (
+                <button
+                  type="button"
+                  disabled={isProcessing}
+                  style={{
+                    border: '1px solid gray',
+                    marginLeft: 'auto',
+                    marginRight: '0px',
+                  }}
+                  onClick={() => handleToggleFavorite()}
+                >
+                  {problem.isFavorite ? '즐겨찾기 삭제' : '즐겨찾기 추가'}
+                </button>
+              )}
               {problem.imageUrl && (
                 <img src={problem.imageUrl} alt={problem.title} />
               )}
@@ -90,7 +100,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                     style={{
                       display: 'block',
                       margin: '5px auto',
-                      border: `1px solid${problem.answerSubmittedPreviously === idx + 1 ? ' red' : ' #e6e6e6'}`,
+                      border: `1px solid${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? ' red' : ' #e6e6e6'}`,
                     }}
                     disabled={isProcessing}
                     onClick={() => {
@@ -99,12 +109,26 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                   >{`${idx + 1}번. ${option.optionText}`}</button>
                 ))}
               </div>
-              {!isProcessing && correctAnswer && (
+              {!token.isAuthenticated && selectedAnswerForGuest ? (
                 <div style={{ margin: '14px auto' }}>
-                  {problem.answerSubmittedPreviously === correctAnswer
+                  {selectedAnswerForGuest === correctAnswer
                     ? '정답입니다!'
                     : '오답입니다...'}
                 </div>
+              ) : (
+                <>
+                  {!isProcessing &&
+                  correctAnswer &&
+                  !!problem.answerSubmittedPreviously ? (
+                    <div style={{ margin: '14px auto' }}>
+                      {problem.answerSubmittedPreviously === correctAnswer
+                        ? '정답입니다!'
+                        : '오답입니다...'}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
               )}
             </div>
           </>

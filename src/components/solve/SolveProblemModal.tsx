@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
 import ColorStar from '../../assets/ColorStar.svg';
 import WhiteStar from '../../assets/WhiteStar.svg';
+import Xicon from '../../assets/dismiss.svg';
 
 interface IPropsSolveProblemModal {
   problem: IProblem | null;
@@ -72,19 +73,23 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
         {problem && (
           <>
             <S.ModalHeader>
-              <S.Title>{`[${problem.source || '출처 미상'}] ${problem.title}`}</S.Title>
-              <S.CloseButton onClick={onClose}>X</S.CloseButton>
-            </S.ModalHeader>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <S.Source>{problem.source || '출처 미상'}</S.Source>
+              <S.Title>{problem.title}</S.Title>
+              <S.CloseButton onClick={onClose}>
+                <img src={Xicon} alt="닫기" />
+              </S.CloseButton>
               {token.isAuthenticated && (
                 <button
                   type="button"
                   disabled={isProcessing}
                   style={{
+                    //position: 'absolute',
+                    display: 'block', // 블록 요소로 변경
                     border: '0.2px solid #B7B0FF',
+                    right: '35px',
+                    marginTop: '15px',
                     marginLeft: 'auto',
-                    marginRight: '0px',
-                    marginBottom: '10px',
+                    marginRight: '5px',
                     borderRadius: '10px',
                     padding: '3px 10px',
                     alignContent: 'center',
@@ -125,10 +130,19 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                   )}
                 </button>
               )}
+            </S.ModalHeader>
+
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {problem.imageUrl && (
                 <img src={problem.imageUrl} alt={problem.title} />
               )}
-              <div style={{ marginTop: '14px', alignItems: 'left' }}>
+              <div
+                style={{
+                  marginTop: '0px',
+                  alignItems: 'left',
+                  marginBottom: '20px',
+                }}
+              >
                 {problem.options.map((option, idx) => (
                   <button
                     key={idx}
@@ -141,6 +155,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                       alignItems: 'center',
                       margin: '5px auto',
                       border: 'none',
+                      fontSize: '15px',
                       //border: `0.5px solid${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
                     }}
                     disabled={isProcessing}
@@ -161,7 +176,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                         alignItems: 'center', // 세로 중앙 정렬
                         color: `${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#ffffff' : ' #B7B0FF'}`,
                         fontWeight: 'bold', // 텍스트 두께
-                        fontSize: '12px', // 텍스트 크기
+                        fontSize: '14px', // 텍스트 크기
                       }}
                     >
                       {idx + 1}

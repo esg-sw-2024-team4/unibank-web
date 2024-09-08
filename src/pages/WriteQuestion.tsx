@@ -13,7 +13,6 @@ const WriteQuestion: FC = () => {
   const navigate = useNavigate();
   const auth = useRecoilValue(authState);
   const [questionText, setQuestionText] = useState('');
-  const [questionType] = useState('객관식 문제');
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
   const [enteredOptions, setEnteredOptions] = useState<string[]>([
     '',
@@ -111,19 +110,15 @@ const WriteQuestion: FC = () => {
         <p>새로운 문제를 등록하세요.</p>
       </S.TitleDiv>
       <S.WriteContainer>
-        <S.Button onClick={openModal}>과목 선택</S.Button>
+        <S.ButtonSelectSubject onClick={openModal}>
+          과목 선택
+        </S.ButtonSelectSubject>
         {selectedSubjectName && (
-          <p
-            style={{
-              marginBottom: '60px',
-              marginLeft: '10px',
-              color: '#909090',
-            }}
-          >
+          <S.DivCurrentSelectedSubject>
             현재 선택된 과목: {selectedSubjectName}({selectedSubjectId})
-          </p>
+          </S.DivCurrentSelectedSubject>
         )}
-        <S.InputWrapper>
+        <S.InputWrapper style={{ marginTop: '16px' }}>
           <S.Label>문제 작성</S.Label>
           <S.TextArea
             placeholder="문제를 작성해 주세요."
@@ -133,7 +128,7 @@ const WriteQuestion: FC = () => {
         </S.InputWrapper>
         <S.InputWrapper>
           <S.Label>문제 유형</S.Label>
-          <S.QuestionType>{questionType}</S.QuestionType>
+          <S.QuestionType>객관식 문제</S.QuestionType>
         </S.InputWrapper>
         {enteredOptions.map((opt, idx) => (
           <S.InputWrapper key={idx}>

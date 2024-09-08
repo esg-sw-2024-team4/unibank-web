@@ -56,7 +56,6 @@ const Subject: FC = () => {
       if (!id || isNaN(+id)) {
         throw new Error('Invalid request...');
       }
-      setLoading(true);
       const responseSubject = await getSubjectById(+id);
       if (responseSubject) {
         setSubject(responseSubject.data);
@@ -69,8 +68,6 @@ const Subject: FC = () => {
     } catch (err) {
       console.error(err);
       navigate(PATHS.notFound);
-    } finally {
-      setLoading(false); // 데이터 로딩 후 로딩 상태 종료
     }
   }, [id, token, navigate]);
   useEffect(() => {
@@ -124,24 +121,24 @@ const Subject: FC = () => {
         </S.TitleDiv>
         <S.ProblemContainer>
           <S.ProblemBankSection>
+            {token.isAuthenticated && (
+              <S.FilterContainer>
+                <AuthorFilter
+                  selectedOption={selectedOption}
+                  onOptionChange={handleOptionChange}
+                />
+                <SolvedFilter
+                  selectedOption={selectedOption}
+                  onOptionChange={handleOptionChange}
+                />
+                <FavoriteFilter
+                  showAvailable={showAvailable}
+                  toggle={() => setShowAvailable(!showAvailable)}
+                />
+              </S.FilterContainer>
+            )}
             <S.SubjectHeader>
               <h2 style={{ marginBottom: '0px' }}>문제 리스트</h2>
-              {token.isAuthenticated && (
-                <S.FilterContainer>
-                  <AuthorFilter
-                    selectedOption={selectedOption}
-                    onOptionChange={handleOptionChange}
-                  />
-                  <SolvedFilter
-                    selectedOption={selectedOption}
-                    onOptionChange={handleOptionChange}
-                  />
-                  <FavoriteFilter
-                    showAvailable={showAvailable}
-                    toggle={() => setShowAvailable(!showAvailable)}
-                  />
-                </S.FilterContainer>
-              )}
             </S.SubjectHeader>
             <S.DivProblemList>
               {filteredProblems.map((problem, idx) => (

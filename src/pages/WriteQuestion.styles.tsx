@@ -2,7 +2,11 @@ import styled from 'styled-components';
 
 export const SubjectContainer = styled.div`
   margin-top: 140px;
-  width: 70vw;
+  width: 80vw;
+
+  @media screen and (min-width: 768px) {
+    width: 70vw;
+  }
 `;
 
 export const TitleDiv = styled.div`
@@ -37,9 +41,13 @@ export const WriteContainer = styled.div`
 `;
 
 export const InputWrapper = styled.div`
-  display: flex;
-  align-items: center;
   margin-bottom: 15px;
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 export const Label = styled.label`
@@ -48,8 +56,14 @@ export const Label = styled.label`
   font-size: 16px;
   color: #333;
   margin-left: 10px;
-  width: 150px; /* 라벨의 너비를 고정하여 입력창과의 공간을 유지 */
-  text-align: left; /* 라벨을 오른쪽으로 정렬 */
+  margin-bottom: 10px;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    align-items: center;
+    width: 150px; /* 라벨의 너비를 고정하여 입력창과의 공간을 유지 */
+    text-align: left; /* 라벨을 오른쪽으로 정렬 */
+  }
 `;
 
 export const Input = styled.input`
@@ -134,4 +148,15 @@ export const QuestionType = styled.p`
 export const Text = styled.div`
   font-size: 13px;
   color: #7e7b7b;
+`;
+
+export const ButtonSelectSubject = styled(Button)`
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+export const DivCurrentSelectedSubject = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
 `;

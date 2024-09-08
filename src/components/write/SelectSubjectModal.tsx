@@ -1,7 +1,9 @@
 import * as S from './SelectSubjectModal.style';
 import { FC, useEffect, useState } from 'react';
-import { getSubjectsByKeyword } from '../../services/api';
+import { getSubjectsByKeyword, postSubject } from '../../services/api';
 import { ISubject } from '../../interfaces';
+import { useRecoilState } from 'recoil';
+import { authState } from '../../store/authAtom';
 
 interface SelectSubjectModalProps {
   onSelect: (selectedSubjectName: string, selectedSubjectId: number) => void;
@@ -12,10 +14,12 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
   onSelect,
   onClose,
 }) => {
+  const [token] = useRecoilState(authState);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [filteredSubjectList, setFilteredSubjectList] = useState<ISubject[]>(
     []
   );
-
+  const [enteredSubjectName, setEnteredSubjectName] = useState('');
   useEffect(() => {
     getSubjectsByKeyword('').then((data) => {
       if (data) {
@@ -24,7 +28,27 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
       }
     });
   }, []);
-
+  const handleClickAddSubject = async () => {
+    if (!enteredSubjectName) {
+      return;
+    }
+    setIsProcessing(true);
+    try {
+      await postSubject(token.accessToken, {
+        name: enteredSubjectName,
+        description: enteredSubjectName,
+      });
+      const data = await getSubjectsByKeyword('');
+      if (data) {
+        const { data: fetchedSubjectsAll } = data;
+        setFilteredSubjectList(fetchedSubjectsAll);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
   return (
     <S.ModalOverlay onClick={onClose}>
       <S.ModalContent onClick={(e) => e.stopPropagation()}>
@@ -32,6 +56,24 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
           <S.Title>과목 선택</S.Title>
           <S.CloseButton onClick={onClose}>X</S.CloseButton>
         </S.ModalHeader>
+        <S.AddSubjectInput
+          type="text"
+          disabled={isProcessing}
+          value={enteredSubjectName}
+          onChange={(e) => {
+            setEnteredSubjectName(e.target.value);
+          }}
+        />
+        <S.AddSubjectButton
+          type="button"
+          disabled={isProcessing}
+          onClick={() => {
+            handleClickAddSubject();
+            setEnteredSubjectName('');
+          }}
+        >
+          과목 추가
+        </S.AddSubjectButton>
         <S.SubjectList>
           {filteredSubjectList.map((subject) => (
             <S.SubjectItem

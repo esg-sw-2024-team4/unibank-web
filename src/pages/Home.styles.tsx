@@ -57,10 +57,13 @@ export const DivSearchBar = styled.div`
   align-items: center;
   border-radius: 25px;
   padding: 10px;
-  /* max-width: 400px; */
-  width: 60%;
   box-shadow: 0px 5px 30px #e1e4ff;
   z-index: 5;
+  width: 85%;
+
+  @media screen and (min-width: 768px) {
+    width: 60%;
+  }
 `;
 
 export const InputSearch = styled.input`
@@ -110,7 +113,7 @@ export const DivSubjectList = styled.div`
 `;
 
 export const DivSubjectItem = styled.div`
-  width: 55%;
+  width: 80%;
   margin-bottom: 10px;
   padding: 30px;
   background-color: #ededed;
@@ -124,6 +127,10 @@ export const DivSubjectItem = styled.div`
       rgba(214, 235, 255, 0.25) 0%,
       rgba(194, 199, 255, 0.25) 100%
     );
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 55%;
   }
 `;
 

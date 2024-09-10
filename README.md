@@ -53,6 +53,4 @@
 https://www.figma.com/design/sfqM2ZevrLzJ0OgPU8N8jV/esg-sw?node-id=0-1&t=gCeO7UjAHjRHY84x-1
 <br><br>
 
-| Variable Name       | Description          |
-| ------------------- | -------------------- |
-| VITE_URL_API_SERVER | 백엔드 서버 API 주소 |
+

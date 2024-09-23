@@ -12,6 +12,7 @@ const API_URL = import.meta.env.DEV
   : import.meta.env.VITE_URL_API_SERVER;
 
 const instance: AxiosInstance = axios.create({
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -48,13 +49,12 @@ export const authenticate = () => {
 };
 
 export const checkToken = (token: string) =>
-  instance.get(`${API_URL}/auth/check`, withBearer(token));
+  instance.get(`/auth/check`, withBearer(token));
 
 export const getSubjectsByKeyword = async (search: string) => {
-  const res = await instance.get<IMResponse<ISubject>>(`${API_URL}/subjects`, {
+  const { data } = await instance.get<IMResponse<ISubject>>(`/subjects`, {
     params: { search },
   });
-  const { data } = res;
   return data;
 };
 
@@ -63,12 +63,12 @@ export const postSubject = async (
   subject: Omit<ISubject, 'id'>
 ) => {
   try {
-    const res = await instance.post(
-      `${API_URL}/subjects`,
+    const { data } = await instance.post(
+      `/subjects`,
       subject,
       withBearer(token)
     );
-    return res.data;
+    return data;
   } catch (error) {
     console.error('Failed to post a subject:', error);
   }
@@ -79,10 +79,9 @@ export const getSubjectById = async (subjectId: number) => {
     if (!subjectId) {
       throw new Error('Invalid subject id...');
     }
-    const res = await instance.get<ISResponse<ISubject>>(
-      `${API_URL}/subjects/${subjectId}`
+    const { data } = await instance.get<ISResponse<ISubject>>(
+      `/subjects/${subjectId}`
     );
-    const { data } = res;
     return data;
   } catch (error) {
     console.error('Failed to fetch a subject', error);
@@ -92,11 +91,10 @@ export const getSubjectById = async (subjectId: number) => {
 export const getProblems = async (subjectId: number, token?: string) => {
   try {
     const qs = subjectId ? `?subject_id=${subjectId}` : '';
-    const res = await instance.get<IMResponse<IProblem>>(
-      `${API_URL}/questions${qs}`,
+    const { data } = await instance.get<IMResponse<IProblem>>(
+      `/questions${qs}`,
       token ? withBearer(token) : {}
     );
-    const { data } = res;
     return data;
   } catch (error) {
     console.error('문제 리스트 받기 실패', error);
@@ -108,12 +106,12 @@ export const postProblem = async (
   problem: Omit<IRequestBodyProblem, 'id'>
 ) => {
   try {
-    const res = await instance.post<IProblem>(
-      `${API_URL}/questions`,
+    const { data } = await instance.post<IProblem>(
+      `/questions`,
       problem,
       withBearer(token)
     );
-    return res.data;
+    return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
@@ -125,12 +123,12 @@ export const putProblem = async (
 ) => {
   try {
     const { id, ...r } = problem;
-    const res = await instance.put<IProblem>(
-      `${API_URL}/questions/${id}`,
+    const { data } = await instance.put<IProblem>(
+      `/questions/${id}`,
       r,
       withBearer(token)
     );
-    return res.data;
+    return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
@@ -138,11 +136,11 @@ export const putProblem = async (
 
 export const deleteProblem = async (token: string, id: number) => {
   try {
-    const res = await instance.delete<IProblem>(
-      `${API_URL}/questions/${id}`,
+    const { data } = await instance.delete<IProblem>(
+      `/questions/${id}`,
       withBearer(token)
     );
-    return res.data;
+    return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
@@ -154,12 +152,12 @@ export const submitSolution = async (
   answer: number
 ) => {
   try {
-    const res = await instance.post(
-      `${API_URL}/questions/${id}/submit`,
+    const { data } = await instance.post(
+      `/questions/${id}/submit`,
       { answer },
       withBearer(token)
     );
-    return res.data;
+    return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
@@ -167,12 +165,12 @@ export const submitSolution = async (
 
 export const toggleFavorite = async (token: string, id: number) => {
   try {
-    const res = await instance.post(
-      `${API_URL}/questions/${id}/favorite`,
+    const { data } = await instance.post(
+      `/questions/${id}/favorite`,
       {},
       withBearer(token)
     );
-    return res.data;
+    return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }

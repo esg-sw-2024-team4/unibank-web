@@ -62,11 +62,3 @@
 
 https://www.figma.com/design/sfqM2ZevrLzJ0OgPU8N8jV/esg-sw?node-id=0-1&t=gCeO7UjAHjRHY84x-1
 <br><br>
-
-## 환경 변수
-
-프로젝트 루트 디렉토리 내에 [.env] 파일을 생성하고 [변수명:값] 혹은 [변수명:"값"] 형식으로 환경 변수를 설정해주세요
-
-| Variable Name       | Description          |
-| ------------------- | -------------------- |
-| VITE_URL_API_SERVER | 백엔드 API 서버 주소 |

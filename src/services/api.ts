@@ -7,9 +7,7 @@ import {
   ISubject,
 } from '../interfaces';
 
-const API_URL = import.meta.env.DEV
-  ? '/api'
-  : import.meta.env.VITE_URL_API_SERVER;
+const API_URL = '/api';
 
 const instance: AxiosInstance = axios.create({
   baseURL: API_URL,

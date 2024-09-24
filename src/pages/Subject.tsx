@@ -87,15 +87,7 @@ const Subject: FC = () => {
     ) {
       setCurrentSolvingProblemId(0);
     }
-  }, [
-    auth,
-    id,
-    selectedOption,
-    fetchedProblems,
-    showAvailable,
-    currentSolvingProblemId,
-    filteredProblems,
-  ]);
+  }, [auth, id, selectedOption, fetchedProblems, showAvailable]);
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };

@@ -5,7 +5,7 @@ import * as S from './Header.styles';
 import { useRecoilState } from 'recoil';
 import { authState } from '../../store/authAtom';
 import { Link } from 'react-router-dom';
-import { authenticate, clearCredentials } from '../../services/api';
+import { authenticate, signout } from '../../services/api';
 import logo from '../../assets/UniBank.svg';
 
 const Header: FC = () => {
@@ -21,13 +21,16 @@ const Header: FC = () => {
     authenticate();
   };
   const handleSignOut = () => {
-    clearCredentials();
-    setAuth({
-      isAuthenticated: false,
-      id: '',
-      name: '',
-      email: '',
-      point: '',
+    signout().then((data) => {
+      if (data) {
+        setAuth({
+          isAuthenticated: false,
+          id: '',
+          name: '',
+          email: '',
+          point: '',
+        });
+      }
     });
   };
   return (

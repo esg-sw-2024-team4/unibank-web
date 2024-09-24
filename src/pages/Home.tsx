@@ -16,21 +16,12 @@ const Home: FC = () => {
     const params = new URLSearchParams(location.search);
     const isAuthenticated = params.get('auth') === 'success';
     if (isAuthenticated) {
-      fetchUserInfo()
-        .then((res) => {
-          if (res.data) {
-            console.log(res.data);
-            const { id, name, email, point } = res.data;
-            localStorage.setItem('id', id);
-            localStorage.setItem('name', name);
-            localStorage.setItem('email', email);
-            localStorage.setItem('point', point);
-            window.dispatchEvent(new Event('storage'));
-          }
-        })
-        .finally(() => {
-          // window.close();
-        });
+      fetchUserInfo().finally(() => {
+        if (window?.opener) {
+          window?.opener?.location.reload();
+        }
+        window.close();
+      });
     } else {
       setIsAuthRequest(false);
     }

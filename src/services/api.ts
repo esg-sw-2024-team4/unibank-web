@@ -16,19 +16,9 @@ const instance: AxiosInstance = axios.create({
   },
   timeout: 10000,
   withCredentials: true,
-  xsrfCookieName: 'csrfToken',
-  xsrfHeaderName: 'X-CSRF-token',
 });
 
-export const clearCredentials = () => {
-  localStorage.removeItem('id');
-  localStorage.removeItem('name');
-  localStorage.removeItem('email');
-  localStorage.removeItem('point');
-};
-
 export const authenticate = () => {
-  clearCredentials();
   const width = 500,
     height = 600,
     left = window.screenX + (window.outerWidth - width) / 2,
@@ -40,13 +30,36 @@ export const authenticate = () => {
   );
 };
 
-export const fetchUserInfo = () => instance.get(`/auth/fetch`);
+export const fetchUserInfo = async () => {
+  try {
+    const res = await instance.get(`/auth/fetch`);
+    if (res.status === 204) {
+      return null;
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Failed to fetch user info:', error);
+  }
+};
+
+export const signout = async () => {
+  try {
+    const { data } = await instance.post(`/auth/signout`);
+    return data;
+  } catch (error) {
+    console.error('Failed to sign out:', error);
+  }
+};
 
 export const getSubjectsByKeyword = async (search: string) => {
-  const { data } = await instance.get<IMResponse<ISubject>>(`/subjects`, {
-    params: { search },
-  });
-  return data;
+  try {
+    const { data } = await instance.get<IMResponse<ISubject>>(`/subjects`, {
+      params: { search },
+    });
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch subjects:', error);
+  }
 };
 
 export const postSubject = async (subject: Omit<ISubject, 'id'>) => {

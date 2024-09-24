@@ -21,16 +21,15 @@ const Header: FC = () => {
     authenticate();
   };
   const handleSignOut = () => {
-    signout().then((data) => {
-      if (data) {
-        setAuth({
-          isAuthenticated: false,
-          id: '',
-          name: '',
-          email: '',
-          point: '',
-        });
-      }
+    signout().finally(() => {
+      setAuth({
+        isAuthenticated: false,
+        id: '',
+        name: '',
+        email: '',
+        point: '',
+      });
+      location.reload();
     });
   };
   return (

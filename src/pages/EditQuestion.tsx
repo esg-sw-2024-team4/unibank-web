@@ -61,8 +61,7 @@ const EditQuestion: FC = () => {
     closeModal();
   };
   const handleSubmit = async () => {
-    if (!auth.isAuthenticated || !auth.accessToken) {
-      console.error('No token found');
+    if (!auth.isAuthenticated) {
       alert('로그인 후 다시 시도해주세요.');
       return;
     }
@@ -113,7 +112,7 @@ const EditQuestion: FC = () => {
     }
     try {
       // Axios를 사용하여 문제 데이터 전송
-      await putProblem(auth.accessToken, questionData);
+      await putProblem(questionData);
       navigate(`/subjects/${selectedSubjectId}`);
     } catch (error) {
       console.error('An error occurred while submitting the question', error);

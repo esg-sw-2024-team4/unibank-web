@@ -15,18 +15,12 @@ const instance: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 10000,
+  withCredentials: true,
+  xsrfCookieName: 'csrfToken',
+  xsrfHeaderName: 'X-CSRF-token',
 });
 
-const withBearer = (token: string) => {
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
-
 export const clearCredentials = () => {
-  localStorage.removeItem('accessToken');
   localStorage.removeItem('id');
   localStorage.removeItem('name');
   localStorage.removeItem('email');
@@ -46,8 +40,7 @@ export const authenticate = () => {
   );
 };
 
-export const checkToken = (token: string) =>
-  instance.get(`/auth/check`, withBearer(token));
+export const fetchUserInfo = () => instance.get(`/auth/fetch`);
 
 export const getSubjectsByKeyword = async (search: string) => {
   const { data } = await instance.get<IMResponse<ISubject>>(`/subjects`, {
@@ -56,16 +49,9 @@ export const getSubjectsByKeyword = async (search: string) => {
   return data;
 };
 
-export const postSubject = async (
-  token: string,
-  subject: Omit<ISubject, 'id'>
-) => {
+export const postSubject = async (subject: Omit<ISubject, 'id'>) => {
   try {
-    const { data } = await instance.post(
-      `/subjects`,
-      subject,
-      withBearer(token)
-    );
+    const { data } = await instance.post(`/subjects`, subject);
     return data;
   } catch (error) {
     console.error('Failed to post a subject:', error);
@@ -86,12 +72,11 @@ export const getSubjectById = async (subjectId: number) => {
   }
 };
 
-export const getProblems = async (subjectId: number, token?: string) => {
+export const getProblems = async (subjectId: number) => {
   try {
     const qs = subjectId ? `?subject_id=${subjectId}` : '';
     const { data } = await instance.get<IMResponse<IProblem>>(
-      `/questions${qs}`,
-      token ? withBearer(token) : {}
+      `/questions${qs}`
     );
     return data;
   } catch (error) {
@@ -99,75 +84,46 @@ export const getProblems = async (subjectId: number, token?: string) => {
   }
 };
 
-export const postProblem = async (
-  token: string,
-  problem: Omit<IRequestBodyProblem, 'id'>
-) => {
+export const postProblem = async (problem: Omit<IRequestBodyProblem, 'id'>) => {
   try {
-    const { data } = await instance.post<IProblem>(
-      `/questions`,
-      problem,
-      withBearer(token)
-    );
+    const { data } = await instance.post<IProblem>(`/questions`, problem);
     return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
 };
 
-export const putProblem = async (
-  token: string,
-  problem: IRequestBodyProblem
-) => {
+export const putProblem = async (problem: IRequestBodyProblem) => {
   try {
     const { id, ...r } = problem;
-    const { data } = await instance.put<IProblem>(
-      `/questions/${id}`,
-      r,
-      withBearer(token)
-    );
+    const { data } = await instance.put<IProblem>(`/questions/${id}`, r);
     return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
 };
 
-export const deleteProblem = async (token: string, id: number) => {
+export const deleteProblem = async (id: number) => {
   try {
-    const { data } = await instance.delete<IProblem>(
-      `/questions/${id}`,
-      withBearer(token)
-    );
+    const { data } = await instance.delete<IProblem>(`/questions/${id}`);
     return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
 };
 
-export const submitSolution = async (
-  token: string,
-  id: number,
-  answer: number
-) => {
+export const submitSolution = async (id: number, answer: number) => {
   try {
-    const { data } = await instance.post(
-      `/questions/${id}/submit`,
-      { answer },
-      withBearer(token)
-    );
+    const { data } = await instance.post(`/questions/${id}/submit`, { answer });
     return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);
   }
 };
 
-export const toggleFavorite = async (token: string, id: number) => {
+export const toggleFavorite = async (id: number) => {
   try {
-    const { data } = await instance.post(
-      `/questions/${id}/favorite`,
-      {},
-      withBearer(token)
-    );
+    const { data } = await instance.post(`/questions/${id}/favorite`);
     return data;
   } catch (error) {
     console.error('Failed to post a problem:', error);

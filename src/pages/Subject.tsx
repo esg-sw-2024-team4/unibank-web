@@ -6,7 +6,7 @@ import { IProblem, IPropsEditQuestion, ISubject, PATHS } from '../interfaces';
 import AuthorFilter from '../components/filter/AuthorFilter';
 import SolvedFilter from '../components/filter/SolvedFilter';
 import FavoriteFilter from '../components/filter/FavoriteFilter';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { authState } from '../store/authAtom';
 import Loading from '../components/loading/Loading';
 import SolveProblemModal from '../components/solve/SolveProblemModal';
@@ -14,21 +14,13 @@ import SolveProblemModal from '../components/solve/SolveProblemModal';
 const Subject: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [token] = useRecoilState(authState);
+  const auth = useRecoilValue(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [fetchedProblems, setFetchedProblems] = useState<IProblem[]>([]);
   const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [showAvailable, setShowAvailable] = useState(false);
-  const handleOrphanCurrentSolvingProblem = () => {
-    if (
-      currentSolvingProblemId &&
-      !filteredProblems.find((p) => p.id === currentSolvingProblemId)
-    ) {
-      setCurrentSolvingProblemId(0);
-    }
-  };
   const fetchData = useCallback(async () => {
     try {
       if (!id || isNaN(+id)) {
@@ -38,11 +30,9 @@ const Subject: FC = () => {
       const responseSubject = await getSubjectById(+id);
       if (responseSubject) {
         setSubject(responseSubject.data);
-        getProblems(+id, token.accessToken).then(
-          (responseProblemsBySubject) => {
-            setFetchedProblems(responseProblemsBySubject?.data || []);
-          }
-        );
+        getProblems(+id).then((responseProblemsBySubject) => {
+          setFetchedProblems(responseProblemsBySubject?.data || []);
+        });
       }
     } catch (err) {
       console.error(err);
@@ -50,7 +40,7 @@ const Subject: FC = () => {
     } finally {
       setLoading(false); // 데이터 로딩 후 로딩 상태 종료
     }
-  }, [id, token, navigate]);
+  }, [id, navigate]);
   const fetchDataSync = useCallback(async () => {
     try {
       if (!id || isNaN(+id)) {
@@ -59,17 +49,14 @@ const Subject: FC = () => {
       const responseSubject = await getSubjectById(+id);
       if (responseSubject) {
         setSubject(responseSubject.data);
-        const responseProblemsBySubject = await getProblems(
-          +id,
-          token.accessToken
-        );
+        const responseProblemsBySubject = await getProblems(+id);
         setFetchedProblems(responseProblemsBySubject?.data || []);
       }
     } catch (err) {
       console.error(err);
       navigate(PATHS.notFound);
     }
-  }, [id, token, navigate]);
+  }, [id, navigate]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -81,7 +68,7 @@ const Subject: FC = () => {
   };
   useEffect(() => {
     const newFilteredProblems = fetchedProblems.filter((p) => {
-      return !token.accessToken
+      return !auth.isAuthenticated
         ? true
         : (selectedOption === 'myProblems'
             ? p.isOwned
@@ -94,15 +81,31 @@ const Subject: FC = () => {
                   : true) && (showAvailable ? p.isFavorite : true);
     });
     setFilteredProblems(newFilteredProblems);
-    handleOrphanCurrentSolvingProblem();
-  }, [token, id, selectedOption, fetchedProblems, showAvailable]);
+    if (
+      currentSolvingProblemId &&
+      !filteredProblems.find((p) => p.id === currentSolvingProblemId)
+    ) {
+      setCurrentSolvingProblemId(0);
+    }
+  }, [
+    auth,
+    id,
+    selectedOption,
+    fetchedProblems,
+    showAvailable,
+    currentSolvingProblemId,
+    filteredProblems,
+  ]);
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
   const handleDeleteQuestion = async (id: number) => {
+    if (!auth.isAuthenticated) {
+      return;
+    }
     setLoading(true);
     try {
-      await deleteProblem(token.accessToken, id);
+      await deleteProblem(id);
       setFetchedProblems([]);
       await fetchData();
     } catch (err) {
@@ -121,7 +124,7 @@ const Subject: FC = () => {
         </S.TitleDiv>
         <S.ProblemContainer>
           <S.ProblemBankSection>
-            {token.isAuthenticated && (
+            {auth.isAuthenticated && (
               <S.FilterContainer>
                 <AuthorFilter
                   selectedOption={selectedOption}
@@ -215,7 +218,7 @@ const Subject: FC = () => {
             </S.DivProblemList>
           </S.ProblemBankSection>
         </S.ProblemContainer>
-        {token.isAuthenticated && (
+        {auth.isAuthenticated && (
           <S.WriteQuestionBtn
             type="button"
             onClick={() => {

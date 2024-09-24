@@ -19,7 +19,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
   onClose,
   fetchProblems,
 }) => {
-  const [token] = useRecoilState(authState);
+  const [auth] = useRecoilState(authState);
   const [isProcessing, setIsProcessing] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
   const [selectedAnswerForGuest, setSelectedAnswerForGuest] = useState<
@@ -31,15 +31,15 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
     } else {
       onClose();
     }
-  }, [problem]);
+  }, [problem, onClose]);
   const handleSubmitSolution = async (selectedAnswer: number) => {
     if (problem?.id) {
       setIsProcessing(true);
       try {
-        const { accessToken } = token;
-        if (accessToken) {
+        const { isAuthenticated } = auth;
+        if (isAuthenticated) {
           setSelectedAnswerForGuest(null);
-          await submitSolution(accessToken, problem.id, selectedAnswer);
+          await submitSolution(problem.id, selectedAnswer);
           await fetchProblems();
           problem.answerSubmittedPreviously = selectedAnswer;
         } else {
@@ -54,10 +54,13 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
   };
   const handleToggleFavorite = async () => {
     if (problem?.id) {
-      const { accessToken } = token;
+      const { isAuthenticated } = auth;
+      if (!isAuthenticated) {
+        return;
+      }
       setIsProcessing(true);
       try {
-        await toggleFavorite(accessToken, problem.id);
+        await toggleFavorite(problem.id);
         await fetchProblems();
         problem.isFavorite = !problem.isFavorite;
       } catch (err) {
@@ -78,7 +81,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
               <S.CloseButton onClick={onClose}>
                 <img src={Xicon} alt="닫기" />
               </S.CloseButton>
-              {token.isAuthenticated && (
+              {auth.isAuthenticated && (
                 <button
                   type="button"
                   disabled={isProcessing}
@@ -156,7 +159,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                       margin: '5px auto',
                       border: 'none',
                       fontSize: '15px',
-                      //border: `0.5px solid${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
+                      //border: `0.5px solid${(!auth.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
                     }}
                     disabled={isProcessing}
                     onClick={() => {
@@ -169,12 +172,12 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                         width: '20px', // 원의 너비
                         height: '20px', // 원의 높이
                         borderRadius: '50%', // 원 모양
-                        backgroundColor: `${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
+                        backgroundColor: `${(!auth.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#B7B0FF' : ' #ffffff'}`,
                         marginRight: '5px', // 텍스트와의 간격
                         display: 'flex', // 중앙 정렬을 위한 flexbox
                         justifyContent: 'center', // 가로 중앙 정렬
                         alignItems: 'center', // 세로 중앙 정렬
-                        color: `${(!token.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#ffffff' : ' #B7B0FF'}`,
+                        color: `${(!auth.isAuthenticated ? selectedAnswerForGuest : problem.answerSubmittedPreviously) === idx + 1 ? '#ffffff' : ' #B7B0FF'}`,
                         fontWeight: 'bold', // 텍스트 두께
                         fontSize: '14px', // 텍스트 크기
                       }}
@@ -185,7 +188,7 @@ const SolveProblemModal: FC<IPropsSolveProblemModal> = ({
                   </button>
                 ))}
               </div>
-              {!token.isAuthenticated && selectedAnswerForGuest ? (
+              {!auth.isAuthenticated && selectedAnswerForGuest ? (
                 <div style={{ margin: '14px auto', alignContent: 'center' }}>
                   {selectedAnswerForGuest === correctAnswer ? (
                     <>

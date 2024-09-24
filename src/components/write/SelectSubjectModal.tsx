@@ -15,7 +15,7 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
   onSelect,
   onClose,
 }) => {
-  const [token] = useRecoilState(authState);
+  const [auth] = useRecoilState(authState);
   const [isProcessing, setIsProcessing] = useState(false);
   const [filteredSubjectList, setFilteredSubjectList] = useState<ISubject[]>(
     []
@@ -30,12 +30,15 @@ const SelectSubjectModal: FC<SelectSubjectModalProps> = ({
     });
   }, []);
   const handleClickAddSubject = async () => {
+    if (!auth.isAuthenticated) {
+      return;
+    }
     if (!enteredSubjectName) {
       return;
     }
     setIsProcessing(true);
     try {
-      await postSubject(token.accessToken, {
+      await postSubject({
         name: enteredSubjectName,
         description: enteredSubjectName,
       });

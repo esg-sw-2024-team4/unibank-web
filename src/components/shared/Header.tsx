@@ -13,7 +13,6 @@ const Header: FC = () => {
   const handleSignIn = () => {
     setAuth({
       isAuthenticated: false,
-      accessToken: '',
       id: '',
       name: '',
       email: '',
@@ -25,7 +24,6 @@ const Header: FC = () => {
     clearCredentials();
     setAuth({
       isAuthenticated: false,
-      accessToken: '',
       id: '',
       name: '',
       email: '',

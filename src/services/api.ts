@@ -11,11 +11,11 @@ const API_URL = '/api';
 
 const instance: AxiosInstance = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
   timeout: 10000,
-  withCredentials: true,
 });
 
 export const authenticate = () => {

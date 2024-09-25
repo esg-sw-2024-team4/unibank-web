@@ -11,20 +11,23 @@ import WriteQuestion from '../pages/WriteQuestion';
 import BaseLayout from '../components/layout/BaseLayout';
 import NotFound from '../pages/NotFound';
 import EditQuestion from '../pages/EditQuestion';
+import LoadingProvider from '../components/container/LoadingProvider';
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path={PATHS.home} element={<Home />} />
-        <Route element={<BaseLayout />}>
-          <Route path={PATHS.subjectById}>
-            <Route index element={<Navigate to={PATHS.notFound} replace />} />
-            <Route path={`${PATHS.subjectById}/:id`} element={<Subject />} />
+        <Route element={<LoadingProvider />}>
+          <Route path={PATHS.home} element={<Home />} />
+          <Route element={<BaseLayout />}>
+            <Route path={PATHS.subjectById}>
+              <Route index element={<Navigate to={PATHS.notFound} replace />} />
+              <Route path={`${PATHS.subjectById}/:id`} element={<Subject />} />
+            </Route>
+            <Route path={PATHS.write} element={<WriteQuestion />} />
+            <Route path={PATHS.edit} element={<EditQuestion />} />
+            <Route path={PATHS.notFound} element={<NotFound />} />
           </Route>
-          <Route path={PATHS.write} element={<WriteQuestion />} />
-          <Route path={PATHS.edit} element={<EditQuestion />} />
-          <Route path={PATHS.notFound} element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

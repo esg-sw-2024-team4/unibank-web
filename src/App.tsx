@@ -1,10 +1,7 @@
 import { FC, useEffect } from 'react';
-
 import { fetchUserInfo } from './services/api';
-
 import { useSetRecoilState } from 'recoil';
 import { authState } from './store/authAtom';
-
 import AppRoutes from './routes/Routes';
 
 const App: FC = () => {
@@ -33,7 +30,11 @@ const App: FC = () => {
         });
       });
   }, []);
-  return <AppRoutes />;
+  return (
+    <>
+      <AppRoutes />
+    </>
+  );
 };
 
 export default App;

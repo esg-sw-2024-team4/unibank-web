@@ -10,13 +10,12 @@ import Header from '../components/shared/Header';
 
 const Home: FC = () => {
   const location = useLocation();
-  const [isAuthRequest, setIsAuthRequest] = useState(true);
+  const [isAuthRequest, setIsAuthRequest] = useState(false);
   useEffect(() => {
     setIsAuthRequest(new URLSearchParams(location.search).has('auth'));
   }, [location]);
   useEffect(() => {
     if (isAuthRequest) {
-      window.opener = window;
       window.close();
     }
   }, [isAuthRequest]);

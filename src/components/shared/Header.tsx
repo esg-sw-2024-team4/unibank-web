@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import * as S from './Header.styles';
 
@@ -10,28 +10,30 @@ import logo from '../../assets/UniBank.svg';
 
 const Header: FC = () => {
   const [auth, setAuth] = useRecoilState(authState);
+  const [popupAuth, setPopupAuth] = useState<Window | null>(null);
+  const clearAuth = () =>
+    setAuth({ isAuthenticated: false, id: '', name: '', email: '', point: '' });
   const handleSignIn = () => {
-    setAuth({
-      isAuthenticated: false,
-      id: '',
-      name: '',
-      email: '',
-      point: '',
-    });
-    authenticate();
+    clearAuth();
+    setPopupAuth(authenticate());
   };
   const handleSignOut = () => {
     signout().finally(() => {
-      setAuth({
-        isAuthenticated: false,
-        id: '',
-        name: '',
-        email: '',
-        point: '',
-      });
-      location.reload();
+      clearAuth();
+      // location.reload();
     });
   };
+  useEffect(() => {
+    if (popupAuth) {
+      const timer = setInterval(() => {
+        if (popupAuth.closed) {
+          clearInterval(timer);
+          location.reload();
+        }
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [popupAuth]);
   return (
     <S.Header>
       <S.DivContents>

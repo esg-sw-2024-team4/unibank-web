@@ -6,60 +6,50 @@ import { IProblem, IPropsEditQuestion, ISubject, PATHS } from '../interfaces';
 import AuthorFilter from '../components/filter/AuthorFilter';
 import SolvedFilter from '../components/filter/SolvedFilter';
 import FavoriteFilter from '../components/filter/FavoriteFilter';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { authState } from '../store/authAtom';
-import Loading from '../components/loading/Loading';
 import SolveProblemModal from '../components/solve/SolveProblemModal';
+import { loadingState } from '../store/loadingAtom';
 
 const Subject: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const auth = useRecoilValue(authState);
   const [subject, setSubject] = useState<ISubject | null>(null);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const setLoading = useSetRecoilState(loadingState);
   const [fetchedProblems, setFetchedProblems] = useState<IProblem[]>([]);
   const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [showAvailable, setShowAvailable] = useState(false);
-  const fetchData = useCallback(async () => {
-    try {
-      if (!id || isNaN(+id)) {
-        throw new Error('Invalid request...');
-      }
-      setLoading(true);
-      const responseSubject = await getSubjectById(+id);
-      if (responseSubject) {
-        setSubject(responseSubject.data);
-        getProblems(+id).then((responseProblemsBySubject) => {
+  const fetchData = useCallback(
+    async (useLoading: boolean = true) => {
+      try {
+        if (!id || isNaN(+id)) {
+          throw new Error('Invalid request...');
+        }
+        if (useLoading) {
+          setLoading({ loadingRouting: true });
+        }
+        const responseSubject = await getSubjectById(+id);
+        if (responseSubject) {
+          setSubject(responseSubject.data);
+          const responseProblemsBySubject = await getProblems(+id);
           setFetchedProblems(responseProblemsBySubject?.data || []);
-        });
+        }
+      } catch (err) {
+        console.error(err);
+        navigate(PATHS.notFound);
+      } finally {
+        if (useLoading) {
+          setLoading({ loadingRouting: false });
+        }
       }
-    } catch (err) {
-      console.error(err);
-      navigate(PATHS.notFound);
-    } finally {
-      setLoading(false); // 데이터 로딩 후 로딩 상태 종료
-    }
-  }, [id, navigate]);
-  const fetchDataSync = useCallback(async () => {
-    try {
-      if (!id || isNaN(+id)) {
-        throw new Error('Invalid request...');
-      }
-      const responseSubject = await getSubjectById(+id);
-      if (responseSubject) {
-        setSubject(responseSubject.data);
-        const responseProblemsBySubject = await getProblems(+id);
-        setFetchedProblems(responseProblemsBySubject?.data || []);
-      }
-    } catch (err) {
-      console.error(err);
-      navigate(PATHS.notFound);
-    }
-  }, [id, navigate]);
+    },
+    [id, navigate, setLoading]
+  );
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, auth]);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [currentSolvingProblemId, setCurrentSolvingProblemId] =
     useState<number>(0);
@@ -83,11 +73,18 @@ const Subject: FC = () => {
     setFilteredProblems(newFilteredProblems);
     if (
       currentSolvingProblemId &&
-      !filteredProblems.find((p) => p.id === currentSolvingProblemId)
+      !newFilteredProblems.find((p) => p.id === currentSolvingProblemId)
     ) {
       setCurrentSolvingProblemId(0);
     }
-  }, [auth, id, selectedOption, fetchedProblems, showAvailable]);
+  }, [
+    auth,
+    id,
+    selectedOption,
+    fetchedProblems,
+    showAvailable,
+    currentSolvingProblemId,
+  ]);
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
@@ -95,7 +92,7 @@ const Subject: FC = () => {
     if (!auth.isAuthenticated) {
       return;
     }
-    setLoading(true);
+    setLoading({ loadingRouting: true });
     try {
       await deleteProblem(id);
       setFetchedProblems([]);
@@ -103,12 +100,11 @@ const Subject: FC = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoading({ loadingRouting: false });
     }
   };
   return (
     <>
-      {loading && <Loading />}
       <S.SubjectContainer>
         <S.TitleDiv>
           <S.H1>{subject?.name}</S.H1>
@@ -227,7 +223,7 @@ const Subject: FC = () => {
               null
             }
             onClose={closeModal}
-            fetchProblems={fetchDataSync}
+            fetchProblems={fetchData.bind(null, false)}
           />
         ) : (
           <></>
